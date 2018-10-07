@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+ <!-- Bootstrap CSS -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+ <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main.css')}}">
+
+<title>Register</title>
+</head>
+
+
+<body style="background-color:rgb(210,210,210);">
+        <header class="site-header">
+            <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+                <div class="container">
+                    <div class="collapse navbar-collapse" id="navbarToggle">
+                        <div class="navbar-nav mr-auto">
+                            <a class="nav-item nav-link" style="color: white" href="/">Home</a>
+                        </div>
+    
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link1" href="/login" style="color: white">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+
+      <div style="padding: 70px">
+        <form action="/registerform" method ='POST' onsubmit="return checkForm(this)">
+            <legend class="border-bottom mb-4">Join Today</legend>
+          <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
+            <!-- <div class="w3-half">
+              <input class="w3-input w3-border" type="text" placeholder="Name" required name="name">
+            </div> -->
+            <div class="w3-half">
+              <input class="w3-input w3-border" type="text" placeholder="USN" id="usn" required required name="usn">
+            </div>
+
+          </div><br>
+            <input class="w3-input w3-border" type="text" placeholder="Semester" id="sem" required
+            required name="sem"><br>
+             <input class="w3-input w3-border" type="text" placeholder="Email" id="email" required
+             required name="email"><br>
+             <input class="w3-input w3-border" type="password" placeholder="Password" id="register-password" required name="password"><br>
+             <input class="w3-input w3-border" type="password" placeholder="Confirm Password"
+             id="register-confirm-password" required name="confirm_password"><br>
+          <button class="w3-button w3-black w3-section w3-right" type="submit">Sign Up</button>
+        </form>
+       
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+var password = document.getElementById("register-password")
+  , confirm_password = document.getElementById("register-confirm-password");
+
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Passwords Don't Match");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+</script>
+</body>
+</html> 

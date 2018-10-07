@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main.css')}}">
+
+	<title>Additional Info</title>
+</head>
+<body style="background-color:rgb(210,210,210);">
+	<header class="site-header">
+		<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+			<div class="container">
+				<div class="collapse navbar-collapse" id="navbarToggle">
+					<div class="navbar-nav mr-auto">
+						<a class="nav-item nav-link" style="color: white" href="/">Home</a>
+					</div>
+					<div class="navbar-nav">
+					</div>	
+				</div>
+			</div>
+		</nav>
+	</header>
+
+      <div style="padding: 70px">
+        <form action="/additionalform" method ='POST'>
+            <legend class="border-bottom mb-4">Additional Details</legend>
+          <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
+            <!-- <div class="w3-half">
+              <input class="w3-input w3-border" type="text" placeholder="Name" required name="name">
+            </div> -->
+            <div class="w3-half">
+              <input class="w3-input w3-border" type="number" placeholder="CGPA" required name="cgpa">
+            </div>
+
+          </div><br>
+            <input class="w3-input w3-border" type="number" placeholder="No.of Coding Competitions Won" required name="coding"><br>
+             <input class="w3-input w3-border" type="text" placeholder="Hackerrank_Profile" required name="hackerrank"><br>
+             <input class="w3-input w3-border" type="number" placeholder="College Club Membership Status (out of 5)" required name="membership_status"><br>
+             <input class="w3-input w3-border" type="number" placeholder="No. of Projects Completed"
+             required name="projects"><br>
+        </form>
+
+	<div class="form-group">
+		<button class="btn btn-outline-info" id="77" name="That's it">Submit</button>
+	</div>
+
+ 
+ <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</body>
+</html>

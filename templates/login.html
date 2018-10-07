@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main.css')}}">
+	<title>Login</title>
+</head>
+<body style="background-color: rgb(210,210,210);">
+	<header class="site-header">
+		<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+			<div class="container">
+				<div class="collapse navbar-collapse" id="navbarToggle">
+					<div class="navbar-nav mr-auto">
+						<a class="nav-item nav-link" style="color: white" href="/">Home</a>
+					</div>
+
+					<div class="navbar-nav">
+						<a class="nav-item nav-link1" href="/register" style="color: white">Register</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</header>
+<div style="padding: 70px">
+        <form action="/loginform" method = 'POST'>                                     <!-- this should not be redirected to register, instead main page--> 
+            <legend class="border-bottom mb-4">LOGIN</legend>
+          <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
+            <!-- <div class="w3-half">
+              <input class="w3-input w3-border" type="text" placeholder="Name" required name="name">
+            </div> -->
+            <div class="w3-half">
+              <input class="w3-input w3-border" type="text" placeholder="USN" required name="usn1">
+            </div>
+
+          </div><br>
+             <input class="w3-input w3-border" type="password" placeholder="Password" required name="password1"><br>
+          <button class="w3-button w3-black w3-section w3-right" type="submit">Sign In</button>
+        </form>
+       
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Need An Account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
+        </small>
+    </div>
+
+</body>
+</html>
