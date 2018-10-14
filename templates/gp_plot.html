@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	 <!-- Bootstrap CSS -->
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='cssem.css')}}">
+	<title>Plots</title>
+	<style type="text/css">
+		
+		.sidebar{
+		  height: 110dpi;
+		  width: 200dpi;
+		  position: absolute;
+		  z-index: 1;
+		  top: 9%;
+		  left: 0;
+		  background-color: #889ead;
+		  overflow-x: hidden;
+		  padding: 20px 20px;
+		}
+		.sidebar input{
+			padding: 2px 10px 10px 10px;
+			text-decoration: none;
+			font-size: 15px;
+			color: # 111;
+			display: block;
+			background-color: #889ead;
+			left: 10%;
+			outline:none;
+			width: 100dpi;
+		}
+		.sidebar input:hover {
+			color: #f1f1f1;
+			outline: none;
+			border: none;
+		}
+		@media screen and (max-height: 450px){
+			.sidebar {padding-top: 15px;}
+			.sidebar a {font-size: 18px;} 
+		}
+	</style>
+</head>
+<body style="background-color:rgb(210,210,210);">
+    <nav class="naba">
+      <ul>
+        <br>
+        <!-- <p style="float: right;position :relative ;right: 55px;"> -->
+        	<form action="/logout_user" method="post">
+           		<button class="" type="submit" style="float: right;position: absolute;right: 55px; background: none;outline: none;color: white;border: none;">Logout</button>		<!--DEBUG LATER -->
+           	</form>	
+        <br>
+      </ul>
+    </nav><br><br>
+    <img src="./static/graph.png" height="542" width="800" style="position: absolute;left:25%;bottom:2%;border-style:solid;">
+
+    <div class="sidebar">
+    	<form action="" method="post"> 
+    		<input type="text" required name="cmp" class="w3-input" list="companies" placeholder="COMPANY" style="width: 140px;padding: 10px 10px 0px">
+    		<datalist id="companies">
+    			<option value="CISCO">
+    			<option value="SHELL">
+    			<option value="DELL">
+    			<option value="INTUIT">
+    			<option value="ACCENTURE">	
+    			<option value="HP">	
+    		</datalist>
+    		<button type="submit" class="btn btn-primary" style="padding: 5px;">GO</button>
+    	</form>
+    	<br>
+    	<br>
+    	<br>
+    	<form action="/subj_plot" method="POST"> 
+    		<input type="text" required name="sub" class="w3-input" list="subjects" placeholder="Subject No." style="width: 150px;padding: 10px 10px 0px">
+    		<datalist id="subjects">
+    			<option value="1">
+    			<option value="2">
+    			<option value="3">
+    			<option value="4">
+    			<option value="5">	
+    			<option value="6">	
+    		</datalist>
+    		<button type="submit" class="btn btn-primary" style="padding: 5px;">GO</button>
+    	</form>
+    </div>	
+</body>
+</html>

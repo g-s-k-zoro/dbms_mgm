@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Marks Entry</title>
+    <!-- <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/2CE96B1A-C33C-704A-818A-7AF79E84B972/main.js" charset="UTF-8"></script> -->
+  <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='cssem.css')}}">
+  </head>
+  <body style="background-color:rgb(210,210,210);">
+    <nav class="naba">
+      <ul>
+        <br>
+          <form action="/logout_user" method="post">
+              <button class="" type="submit" style="float: right;position: absolute;right: 55px; background: none;outline: none;color: white;border: none;">Logout</button>   <!--DEBUG LATER -->
+          </form>
+        <br>
+      </ul>
+    </nav><br><br>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-10">
+            <form class="" action="/subjectpage3" method="POST">
+              <br>
+              <b>Target : </b><input step=0.01 style="background-color: rgb(232, 235, 199)" id="25" type="number" placeholder="cgpa" required name="target"><br>
+              <br>
+
+              <b> <input required name="latest_internal" placeholder="Latest Internal" type="number" style="background-color: rgb(232, 235, 199)">
+              </b><br><br>
+              <b> Enter marks for:</b><br>
+                <div id="table1">
+                  <div class="row">
+                    <div class="col-xs-6">
+                        <label> Engineering Mathematics-III: </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <b><input style="background-color: rgb(232, 235, 199)" id="27" type="number" required name="1"></b><br>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-6">
+                        <label> Data Structures with C</label>
+                    </div>
+                    <div class="col-xs-6">
+                        <b><input style="background-color: rgb(232, 235, 199)" id="28" type="number" required name="2"></b><br>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-6">
+                        <label> Analog and Digital Electronics: </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <b><input style="background-color: rgb(232, 235, 199)" id="29" type="number" required name="3"></b><br>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-6">
+                        <label> Computer Organization and Architecture: </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <b><input style="background-color: rgb(232, 235, 199)" id="30" type="number" required name="4"></b><br>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-6">
+                        <label> Discreete Mathematical Structures: </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <b><input style="background-color: rgb(232, 235, 199)" id="31" type="number" required name="5"></b><br>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-6">
+                        <label> Unix and Shell Programming: </label>
+                    </div>
+                    <div class="col-xs-6">
+                        <b><input style="background-color: rgb(232, 235, 199)" id="32" type="number" required name="6"></b><br>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" style="padding-top:10px;">
+                  <div class="col-xs-2">
+                    <br>
+                      <label> Attendance </label>
+                  </div>
+                  <div class="col-xs-8 col-xs-offset-0"><br>
+                      <b><input required name="attendance" style="background-color: rgb(232, 235, 199)" id="7" type="number" style="width:25%;" required></b><br>
+                  </div>
+                </div>
+                <button class="w3-button w3-black w3-section w3-left" type="submit">Enter</button>
+            </form>
+        </div>
+        <div class="col-xs-2">
+          <div class="row"><br>
+            <table>
+              <tr>
+                <td >USN &nbsp &nbsp </td> &nbsp &nbsp &nbsp
+                <th class="bb" style="color: #111;text-transform: uppercase;">{{ result[0] }}</th>
+              </tr>
+              <tr>
+                <td>SEM</td>
+                <th style="color: #111;text-transform: uppercase;">{{ result[1] }}</th>
+              </tr>
+            </table>
+          </div>
+          <div class="row" id="break"></div>
+          <div class="row" id="break"></div>
+          <div class="row" id="button">
+              <!-- Yaha se render karwa de -->
+            <form action="/plot_b3" method="POST">
+              <button id="54"  style="position:absolute;top: 150%;left: 50%;" type="button" required name="plots"><img src="https://thumb7.shutterstock.com/display_pic_with_logo/859894/449865031/stock-photo-graph-button-isolated-on-white-background-d-render-449865031.jpg" alt="graph" width="60" height="60"></button><br>
+            </form>  
+              <!-- <button style="background-color:#5f788a;height: 35px;width: 100px;font-size: 120%;color: white" id="55" type="button" required name="details">Details</button><br> -->
+            
+<!--             Mostly isko nikaalta bola normalized score ko -->  
+<!--               <button style="background-color: #5f788a;height: 55px;width: 130px;font-size: 120%;color: white" id="56" type="button" required name="ns">Normalised score</button><br> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

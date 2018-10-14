@@ -39,6 +39,9 @@
       <div style="padding: 70px">
         <form action="/registerform" method ='POST' onsubmit="return checkForm(this)">
             <legend class="border-bottom mb-4">Join Today</legend>
+            {% if msg2 %}
+            <small style="color: red">{{msg2}}</small>
+            {% endif %}
           <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
             <!-- <div class="w3-half">
               <input class="w3-input w3-border" type="text" placeholder="Name" required name="name">

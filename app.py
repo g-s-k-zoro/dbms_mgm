@@ -1,17 +1,181 @@
 from flask import Flask,render_template,url_for,flash,redirect, request
 from queries_1 import *
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
-global usn_epic
-global sem_epic
+usn_epic = None
+sem_epic = None
+internal_status = None
+target = None
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 #create_db()		#IT'S DONE, DO NOT RE-EXECUTE:	only to be executed once, be careful!!!!! 
 
+#function for taking in the data from subject page from different sems
+def sem_intake(sem_no):
+	global usn_epic
+	global sem_epic
+	global internal_status
+	global target
+	global flag
+	usn = usn_epic
+	print(usn)
+	print(sem_epic)
+	semester = sem_epic	#has to be defined, and the further names have to be defined that way too
+	sub_1 = request.form['1']
+	sub_2 = request.form['2']
+	sub_3 = request.form['3']
+	sub_4 = request.form['4']
+	sub_5 = request.form['5']
+	sub_6 = request.form['6']
+	internal_status = request.form['latest_internal']
+	target = request.form['target']
+	target=float(target)
+	credit_seq = '344444'#request.form['creditsq']	#instead it should be manually inserted
+	attend = request.form['attendance']	#lets see what to do about this
+	#search if record already exists, if YES then update, else
+	sub_1 = float(sub_1)
+	sub_2 = float(sub_2)
+	sub_3 = float(sub_3)
+	sub_4 = float(sub_4)
+	sub_5 = float(sub_5)
+	sub_6 = float(sub_6)
+	internal_status = int(internal_status)
+	#select_marks()
+	chk_bit = chk_usn(usn)
+	if(internal_status == 1 and chk_bit == 0):
+		flag = 1
+		insert_student_marks(usn,semester,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6,credit_seq)
+	else:
+	 	data = get_marks(usn)
+	 	if(internal_status == 1):
+	 		update_marks(usn,semester,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6,credit_seq)
+	 	elif(internal_status == 2):
+	 		update_marks(usn,semester,(sub_1+data[0][2])/2,(sub_2+data[0][3])/2,(sub_3+data[0][4])/2,(sub_4+data[0][5])/2,(sub_5+data[0][6])/2,(sub_6+data[0][7])/2,credit_seq)
+	 	else:
+	 		update_marks(usn,semester,(sub_1+2*data[0][2])/3,(sub_2+2*data[0][3])/3,(sub_3+2*data[0][4])/3,(sub_4+2*data[0][5])/3,(sub_5+2*data[0][6])/3,(sub_6+2*data[0][7])/3,credit_seq)
+
+	return internal_status, target
+
+
+#function for plotting the overall target goal-graph
+def graph_plot(internal_status, target):
+	global usn_epic
+	data = plot_graph(usn_epic)
+	internal = [1,2,3,4]
+	gpa = []
+	print("This is data")
+	print(data)
+	sum = 3*data[0][2]+4*data[0][3]+4*data[0][4]+4*data[0][5]+4*data[0][6]+4*data[0][7]
+	sum = sum*10/(575)
+	for i in range(internal_status):
+		gpa.append(sum)
+		# gpa.append(sum)
+
+	rem = 4-internal_status
+
+	if(sum<target):
+		delta = target-sum
+		if(rem == 3):
+			gpa.append(target+(1.0*delta/3))
+			gpa.append(target+(2.0*delta/3))
+			gpa.append(target)
+		elif(rem == 2):
+			if(target+delta<10):
+				gpa.append(target+(delta))
+				gpa.append(target)
+			else:
+				gpa.append(target+(delta*2.0/3))
+				gpa.append(target+(delta/3.0))
+		elif(rem == 1):
+			if(target+delta<=10):
+				gpa.append(target+delta)
+			else:
+				gpa.append(15)			#make this colour change to denote impossibility
+
+	else:
+		delta = sum-target
+		if(rem == 3):
+			gpa.append(target-.05)
+			gpa.append(target+.15)
+			gpa.append(target-.05)
+		elif(rem == 2):
+			gpa.append(target+.05)
+			gpa.append(target-.05)
+		elif(rem == 1):
+			gpa.append(target+.05)
+
+	plt.plot(internal,gpa)
+	plt.xlabel('Tests')
+	plt.ylabel('GPA')
+	plt.title('Test Performance')
+	#os.remove('./static/graph.png')
+	plt.savefig('./static/graph.png')
+	plt.close()
+	return True 					#purpose, for error correction: no return response
+	#return render_template('gp_plot.html')		#or additional.html, lets see.
+
+def graph_subject(sub_no, internal_status, target):
+	global usn_epic
+	data = plot_graph(usn_epic)
+	internal = [1,2,3,4]
+	gpa = []
+	print("This is data")
+	print(data)
+	#credit = int(data[0][8][sub_no-1])
+	sum = data[0][sub_no+1]
+	sum = sum*10/(25)
+	for i in range(internal_status):
+		gpa.append(sum)
+		# gpa.append(sum)
+
+	rem = 4-internal_status
+
+	if(sum<target):
+		delta = target-sum
+		if(rem == 3):
+			gpa.append(target+(1.0*delta/3))
+			gpa.append(target+(2.0*delta/3))
+			gpa.append(target)
+		elif(rem == 2):
+			if(target+delta<10):
+				gpa.append(target+(delta))
+				gpa.append(target)
+			else:
+				gpa.append(target+(delta*2.0/3))
+				gpa.append(target+(delta/3.0))
+		elif(rem == 1):
+			if(target+delta<=10):
+				gpa.append(target+delta)
+			else:
+				gpa.append(15)			#make this colour change to denote impossibility
+
+	else:
+		delta = sum-target
+		if(rem == 3):
+			gpa.append(target-.05)
+			gpa.append(target+.15)
+			gpa.append(target-.05)
+		elif(rem == 2):
+			gpa.append(target+.05)
+			gpa.append(target-.05)
+		elif(rem == 1):
+			gpa.append(target+.05)
+
+	plt.plot(internal,gpa)
+	plt.xlabel('Tests')
+	plt.ylabel('GPA')
+	plt.title('Test Performance')
+	plt.savefig('./static/graph.png')
+	plt.close()
+	return True 
+
+
 @app.route("/")
 def home():
+	#select_marks()
 	return render_template('home.html')
 
 @app.route("/login",methods=['POST','GET'])
@@ -43,6 +207,8 @@ def insert_new_stud():
 #verifying the login function
 @app.route("/loginform", methods = ['POST', 'GET'])				#from login.html
 def check_credentials():
+	global usn_epic
+	global sem_epic
 
 	if(request.method == 'POST'):
 		usn1 = request.form['usn1']
@@ -51,21 +217,36 @@ def check_credentials():
 		chk = check_password(usn1,pswd1)
 
 		if(chk == 'valid'):
+			#usn1 = usn1.lower()
 			usn_epic = usn1
 			sem_epic = obtain_sem(usn_epic)
-
+			# Yaha par dhyan dena
+			if(sem_epic == 1):
+				return	render_template('1sem.html',result=[usn_epic,sem_epic])	
+			elif(sem_epic == 2):
+				return	render_template('2sem.html',result=[usn_epic,sem_epic])
+			elif(sem_epic == 3):
+				return	render_template('3sem.html',result=[usn_epic,sem_epic])
+			elif(sem_epic == 4):
+				return	render_template('4sem.html',result=[usn_epic,sem_epic])
+			elif(sem_epic == 5):
+				return	render_template('5sem.html',result=[usn_epic,sem_epic])
+			elif(sem_epic == 6):
+				return	render_template('6sem.html',result=[usn_epic,sem_epic])
+			elif(sem_epic == 7):
+				return	render_template('7sem.html',result=[usn_epic,sem_epic])
+			
 			return render_template('home.html')
 		elif(chk == 'invalid'):
-			flash('Incorrect password, Re-Enter')
-			return render_template('additional.html')
+			return render_template('login.html',msg1="Wrong Password!!")
 		else:
-			flash('Account does not exist, register now!')
-			return render_template('register1.html')		#might have to change this, direct reference
+			return render_template('register1.html',msg2="Create Account!!")		#might have to change this, direct reference
 
 
 @app.route("/additionalform", methods = ['POST', 'GET'])	#from additiponal.html
 def insert_additional():
-
+	global usn_epic
+	global sem_epic
 	if(request.method == 'POST'):
 		cgpa = request.form['cgpa']
 		code = request.form['coding']
@@ -73,39 +254,144 @@ def insert_additional():
 		clbsts = request.form['membership_status']
 		proj = request.form['projects']
 		new_sem = request.form['update_sem']
-
+		sem_epic = new_sem
 		cur_status = exist_check(usn_epic)
 		if(cur_status):
-			insert_truepot(usn_epic, cgpa, code, hckr, clbsts, proj, new_sem)
+			insert_truepot(usn_epic, cgpa, code, hckr, clbsts, proj)
 		else:
 			update_truepot(usn_epic, cgpa, code, hckr, clbsts, proj, new_sem)
 
-		return render_template('main_page.html')		#same page rendering, lets see what happens
+		# return render_template('.html')		#same page rendering, lets see what happens
+		if(sem_epic == 1):
+			return	render_template('1sem.html')
+		elif(sem_epic == 2):
+			return	render_template('2sem.html')
+		elif(sem_epic == 3):
+			return	render_template('3sem.html')
+		elif(sem_epic == 4):
+			return	render_template('4sem.html')
+		elif(sem_epic == 5):
+			return	render_template('5sem.html')
+		elif(sem_epic == 6):
+			return	render_template('6sem.html')
+		elif(sem_epic == 7):
+			return	render_template('7sem.html')		
 
-@app.route("/from_the_subject_page", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
-def insert_marks():
-
+@app.route("/subjectpage1", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
+def insert_marks1():
+	global usn_epic
+	global sem_epic
 	if(request.method == 'POST'):
-		usn = usn_epic
-		semester = sem_epic	#has to be defined, and the further names have to be defined that way too
-		sub_1 = request.form['sub_1']
-		sub_2 = request.form['sub_2']
-		sub_3 = request.form['sub_3']
-		sub_4 = request.form['sub_4']
-		sub_5 = request.form['sub_5']
-		sub_6 = request.form['sub_6']
-		internal_status = request.form['latest_internal']
-		target = request.form['target']
-		credit_seq = request.form['creditsq']
+		
+		internal_status, target = sem_intake(1)
+		graph_plot(internal_status, target)
+		return render_template('gp_plot.html')
 
-		#search if record already exists, if YES then update, else 
-		if(internal_status == 1):
-			insert_student_marks(usn,semester,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6,credit_seq)
-		else:
-			update_marks(usn,semester,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6,credit_seq)
+@app.route("/subjectpage2", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
+def insert_marks2():
+	global usn_epic
+	global sem_epic
+	if(request.method == 'POST'):
 
-		return render_template('main_page.html')		#or additional.html, lets see.
+		internal_status, target = sem_intake(2)
+		graph_plot(internal_status, target)
+		return render_template('gp_plot.html')
 
+@app.route("/subjectpage3", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
+def insert_marks3():
+	global usn_epic
+	global sem_epic
+	if(request.method == 'POST'):
+
+		internal_status, target = sem_intake(3)
+		graph_plot(internal_status, target)
+		return render_template('gp_plot.html')
+
+@app.route("/subjectpage4", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
+def insert_marks4():
+	global usn_epic
+	global sem_epic
+	if(request.method == 'POST'):
+
+		internal_status, target = sem_intake(4)
+		graph_plot(internal_status, target)
+		return render_template('gp_plot.html')
+
+@app.route("/subjectpage5", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
+def insert_marks5():
+	global usn_epic
+	global sem_epic
+	if(request.method == 'POST'):
+
+		internal_status, target = sem_intake(5)
+		graph_plot(internal_status, target)
+		return render_template('gp_plot.html')
+
+@app.route("/subjectpage6", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
+def insert_marks6():
+	global usn_epic
+	global sem_epic
+	if(request.method == 'POST'):
+
+		internal_status, target = sem_intake(6)
+		graph_plot(internal_status, target)
+		return render_template('gp_plot.html')
+
+@app.route("/subjectpage7", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
+def insert_marks7():
+	global usn_epic
+	global sem_epic
+	if(request.method == 'POST'):
+
+		internal_status, target = sem_intake(7)
+		graph_plot(internal_status, target)
+		return render_template('gp_plot.html')
+
+@app.route("/subj_plot", methods = ['POST', 'GET'])
+def plot_sub():
+	global usn_epic
+	global sem_epic
+	if(request.method == 'POST'):
+		sub_no = request.form['sub']
+		sub_no = int(sub_no)
+		
+		graph_subject(sub_no, internal_status, target)
+
+		return render_template('gp_plot.html')
+
+
+#---------------------Temp check : fuunction to remove cache-----------------#
+
+
+#-----------------Routes for "plot" button for the 7 pages-----------------------#
+
+@app.route("/plot_b1", methods = ['POST', 'GET'])
+def pltb1():
+	return render_template('gp_plot.html')
+
+@app.route("/plot_b2", methods = ['POST', 'GET'])
+def pltb2():
+	return render_template('gp_plot.html')
+
+@app.route("/plot_b3", methods = ['POST', 'GET'])
+def pltb3():
+	return render_template('gp_plot.html')
+
+@app.route("/plot_b4", methods = ['POST', 'GET'])
+def pltb4():
+	return render_template('gp_plot.html')	
+
+@app.route("/plot_b5", methods = ['POST', 'GET'])
+def pltb5():
+	return render_template('gp_plot.html')
+
+@app.route("/plot_b6", methods = ['POST', 'GET'])
+def pltb6():
+	return render_template('gp_plot.html')
+
+@app.route("/plot_b7", methods = ['POST', 'GET'])
+def pltb7():
+	return render_template('gp_plot.html')
 
 @app.route("/update_sem1", methods = ['POST', 'GET'])
 def update_stud_sem():
@@ -114,6 +400,10 @@ def update_stud_sem():
 		semester = request.form['update_sem']
 
 		update_semester(usn_epic, semester)
+
+@app.route("/logout_user",methods = ['POST','GET'])
+def logout_function():
+	return render_template('home.html')
 
 if __name__ == '__main__':
 	app.run(debug=True)

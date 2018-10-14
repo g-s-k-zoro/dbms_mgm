@@ -42,6 +42,9 @@
 
           </div><br>
              <input class="w3-input w3-border" type="password" placeholder="Password" required name="password1"><br>
+             {% if msg1 %}
+             <small style="color: red">{{msg1}}</small>
+             {% endif %}
           <button class="w3-button w3-black w3-section w3-right" type="submit">Sign In</button>
         </form>
        

@@ -1,0 +1,22 @@
+#table1{
+      border: 1px solid black;
+      padding: 20px;
+      width: 80%;
+}
+#table1 label,#table1 input{
+  padding: 5px;
+}
+#break{
+  padding: 35px;
+}
+#button button{
+  padding: 5px;
+  margin: 5px;
+}
+.naba{
+	background-color: #5f788a;
+	border-color: #E7E7E7;
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
