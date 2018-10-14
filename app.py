@@ -8,6 +8,7 @@ usn_epic = None
 sem_epic = None
 internal_status = None
 target = None
+arr = []
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
@@ -20,6 +21,7 @@ def sem_intake(sem_no):
 	global internal_status
 	global target
 	global flag
+	global arr
 	usn = usn_epic
 	print(usn)
 	print(sem_epic)
@@ -33,9 +35,24 @@ def sem_intake(sem_no):
 	internal_status = request.form['latest_internal']
 	target = request.form['target']
 	target=float(target)
-	credit_seq = '344444'#request.form['creditsq']	#instead it should be manually inserted
+	#credit_seq = '344444'#request.form['creditsq']	#instead it should be manually inserted
 	attend = request.form['attendance']	#lets see what to do about this
 	#search if record already exists, if YES then update, else
+	if(semester == 1):				#credit sequence for different sems
+		credit_seq = "444442"
+	elif(semester == 2):
+		credit_seq = "444442"
+	elif(semester == 3):
+		credit_seq = "444443"
+	elif(semester == 4):
+		credit_seq = "444443"
+	elif(semester == 5):
+		credit_seq = "544344"
+	elif(semester == 6):
+		credit_seq = "454433"
+	elif(semester == 7):
+		credit_seq = "454333"
+
 	sub_1 = float(sub_1)
 	sub_2 = float(sub_2)
 	sub_3 = float(sub_3)
@@ -53,9 +70,10 @@ def sem_intake(sem_no):
 	 	if(internal_status == 1):
 	 		update_marks(usn,semester,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6,credit_seq)
 	 	elif(internal_status == 2):
+	 		arr = max_min(usn,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6)
 	 		update_marks(usn,semester,(sub_1+data[0][2])/2,(sub_2+data[0][3])/2,(sub_3+data[0][4])/2,(sub_4+data[0][5])/2,(sub_5+data[0][6])/2,(sub_6+data[0][7])/2,credit_seq)
 	 	else:
-	 		update_marks(usn,semester,(sub_1+2*data[0][2])/3,(sub_2+2*data[0][3])/3,(sub_3+2*data[0][4])/3,(sub_4+2*data[0][5])/3,(sub_5+2*data[0][6])/3,(sub_6+2*data[0][7])/3,credit_seq)
+	 		update_marks(usn,semester,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6,credit_seq)
 
 	return internal_status, target
 
@@ -63,40 +81,59 @@ def sem_intake(sem_no):
 #function for plotting the overall target goal-graph
 def graph_plot(internal_status, target):
 	global usn_epic
+	global arr
 	data = plot_graph(usn_epic)
 	internal = [1,2,3,4]
 	gpa = []
 	print("This is data")
 	print(data)
-	sum = 3*data[0][2]+4*data[0][3]+4*data[0][4]+4*data[0][5]+4*data[0][6]+4*data[0][7]
-	sum = sum*10/(575)
-	for i in range(internal_status):
-		gpa.append(sum)
-		# gpa.append(sum)
+	credits = data[0][8]
+	sum1 = int(credits[0])*data[0][2]+int(credits[1])*data[0][3]+int(credits[2])*data[0][4]+int(credits[3])*data[0][5]+int(credits[4])*data[0][6]+int(credits[5])*data[0][7]
+	denom = int(credits[0])+int(credits[1])+int(credits[2])+int(credits[3])+int(credits[4])+int(credits[5])
+	sum1 = sum1*10/(denom*25)
+	if(internal_status!=3):
+		for i in range(internal_status):
+			gpa.append(sum1)
+		# gpa.append(sum1)
+	else:
+		data1 = great_two(usn_epic)
+		sum1 = int(credits[0])*data1[0]+int(credits[1])*data1[1]+int(credits[2])*data1[2]+int(credits[3])*data1[3]+int(credits[4])*data1[4]+int(credits[5])*data1[5]
+		sum1 = sum1*10/(denom*25)
+		gpa.append(sum1)
+		gpa.append(sum1)
+		gpa.append(sum1)
 
 	rem = 4-internal_status
 
-	if(sum<target):
-		delta = target-sum
+	if(sum1<target):
+		delta = target-sum1
 		if(rem == 3):
 			gpa.append(target+(1.0*delta/3))
-			gpa.append(target+(2.0*delta/3))
+			gpa.append(target-(1.0*delta/3))
 			gpa.append(target)
 		elif(rem == 2):
-			if(target+delta<10):
-				gpa.append(target+(delta))
-				gpa.append(target)
+			sum1 = int(credits[0])*arr[0]+int(credits[1])*arr[1]+int(credits[2])*arr[2]+int(credits[3])*arr[3]+int(credits[4])*arr[4]+int(credits[5])*arr[5]
+			sum1=(sum1*10)/(denom*25)
+			delta = target - sum1
+			if(sum1<target):
+				if(target+delta<10):
+					gpa.append(target+(delta))
+					gpa.append(target)
+				else:
+					gpa.append(target+(delta*2.0/3))
+					gpa.append(target+(delta/3.0))
 			else:
-				gpa.append(target+(delta*2.0/3))
-				gpa.append(target+(delta/3.0))
+				gpa.append(target+.05)
+				gpa.append(target-.05)
+
 		elif(rem == 1):
-			if(target+delta<=10):
+			if(target+delta	<=10):
 				gpa.append(target+delta)
 			else:
 				gpa.append(15)			#make this colour change to denote impossibility
 
 	else:
-		delta = sum-target
+		delta = sum1-target
 		if(rem == 3):
 			gpa.append(target-.05)
 			gpa.append(target+.15)
@@ -119,33 +156,47 @@ def graph_plot(internal_status, target):
 
 def graph_subject(sub_no, internal_status, target):
 	global usn_epic
+	global arr
 	data = plot_graph(usn_epic)
 	internal = [1,2,3,4]
 	gpa = []
 	print("This is data")
 	print(data)
 	#credit = int(data[0][8][sub_no-1])
-	sum = data[0][sub_no+1]
-	sum = sum*10/(25)
-	for i in range(internal_status):
-		gpa.append(sum)
-		# gpa.append(sum)
+	sum1 = data[0][sub_no+1]
+	sum1 = sum1*10/(25)
+	if(internal_status!=3):
+		for i in range(internal_status):
+			gpa.append(sum1)
+	else:
+		sum1 = great_two_2(usn_epic, sub_no)
+		sum1 = sum1*1.0/25
+		gpa.append(sum1)
+		gpa.append(sum1)
+		gpa.append(sum1)
 
 	rem = 4-internal_status
 
-	if(sum<target):
-		delta = target-sum
+	if(sum1<target):
+		delta = target-sum1
 		if(rem == 3):
 			gpa.append(target+(1.0*delta/3))
-			gpa.append(target+(2.0*delta/3))
+			gpa.append(target-(1.0*delta/3))
 			gpa.append(target)
 		elif(rem == 2):
-			if(target+delta<10):
-				gpa.append(target+(delta))
-				gpa.append(target)
+			sum1 = arr[sub_no-1]
+			sum1 = sum1*1.0/25
+			delta = target-sum1
+			if(sum1<target):
+				if(target+delta<10):
+					gpa.append(target+(delta))
+					gpa.append(target)
+				else:
+					gpa.append(target+(delta*2.0/3))
+					gpa.append(target+(delta/3.0))
 			else:
-				gpa.append(target+(delta*2.0/3))
-				gpa.append(target+(delta/3.0))
+				gpa.append(target+.05)
+				gpa.append(target-.05)				
 		elif(rem == 1):
 			if(target+delta<=10):
 				gpa.append(target+delta)
@@ -153,7 +204,7 @@ def graph_subject(sub_no, internal_status, target):
 				gpa.append(15)			#make this colour change to denote impossibility
 
 	else:
-		delta = sum-target
+		delta = sum1-target
 		if(rem == 3):
 			gpa.append(target-.05)
 			gpa.append(target+.15)
@@ -175,7 +226,7 @@ def graph_subject(sub_no, internal_status, target):
 
 @app.route("/")
 def home():
-	#select_marks()
+	#internal_tab()
 	return render_template('home.html')
 
 @app.route("/login",methods=['POST','GET'])
@@ -360,7 +411,7 @@ def plot_sub():
 		return render_template('gp_plot.html')
 
 
-#---------------------Temp check : fuunction to remove cache-----------------#
+#---------------------Temp check : function to remove cache-----------------#
 
 
 #-----------------Routes for "plot" button for the 7 pages-----------------------#

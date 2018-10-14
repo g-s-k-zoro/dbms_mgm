@@ -13,6 +13,7 @@ def create_db():
 	conn.commit()
 	conn.close()
 
+
 def connect():
 
 	conn = sqlite3.connect("./ePerform.db")
@@ -59,6 +60,45 @@ def insert_student_marks(usn = 'null', semester = 'null', sub_1 = 'null', sub_2=
 	conn.commit()
 	conn.close()
 	return True
+
+def max_min(usn1, sub1, sub2, sub3, sub4, sub5, sub6):
+	conn, cur = connect()
+	cur.execute("select usn from internal_table where usn = ?",(usn1, ))
+	dat = cur.fetchall()
+	if(dat):
+		cur.execute("delete from internal_table where usn=?", (usn1, ))
+		conn.commit()
+
+	cur.execute("select sub_1, sub_2, sub_3, sub_4, sub_5, sub_6 from stud_marks where usn = ?", (usn1, ))
+	data = cur.fetchall()
+	cur.execute("insert into internal_table values(?,?,?,?,?,?,?,?,?,?,?,?,?)", [usn1, max(data[0][0],sub1), min(data[0][0],sub1), max(data[0][1],sub2), min(data[0][1],sub2), max(data[0][2],sub3), min(data[0][2],sub3), max(data[0][3],sub4), min(data[0][3],sub4), max(data[0][4],sub5), min(data[0][4],sub5), max(data[0][5],sub6), min(data[0][5],sub6)])
+	conn.commit()
+	conn.close()
+	arr1 = [max(data[0][0],sub1),max(data[0][1],sub2),max(data[0][2],sub3),max(data[0][3],sub4),max(data[0][4],sub5),max(data[0][5],sub6)]
+	select_max()
+	return arr1
+
+def great_two(usn1):						#JOINS USED
+	conn, cur = connect()
+	cur.execute("select * from internal_table,stud_marks where internal_table.usn = stud_marks.usn and stud_marks.usn = ?",(usn1, ))
+	data = cur.fetchall()
+	best = []
+	best.append((max(data[0][2],data[0][14])+data[0][1])/2)
+	best.append((max(data[0][4],data[0][15])+data[0][3])/2)
+	best.append((max(data[0][6],data[0][16])+data[0][5])/2)
+	best.append((max(data[0][8],data[0][17])+data[0][7])/2)
+	best.append((max(data[0][10],data[0][18])+data[0][9])/2)
+	best.append((max(data[0][12],data[0][19])+data[0][11])/2)
+	conn.close()
+	return best
+
+def great_two_2(usn1, sub_no):						#JOINS USED
+	conn, cur = connect()
+	cur.execute("select * from internal_table,stud_marks where internal_table.usn = stud_marks.usn and stud_marks.usn = ?",(usn1, ))
+	data = cur.fetchall()
+	best = (max(data[0][2*sub_no],data[0][sub_no+13])+data[0][2*sub_no-1])/2.0
+	conn.close()
+	return best
 
 #select_all_students()
 #update the value of marks
@@ -167,6 +207,15 @@ def select_marks():
 	for i in data:
 		print(i)
 	return data
+
+def select_max():
+	conn, cur = connect()
+	cur.execute("select * from internal_table")
+	data = cur.fetchall()
+	conn.close()
+	for i in data:
+		print(i)
+	return True
 
 
 	#----------------------------------------------------------------------------------------------------------------------------#
