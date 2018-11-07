@@ -8,22 +8,19 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Marks Entry</title>
-    <!-- <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/2CE96B1A-C33C-704A-818A-7AF79E84B972/main.js" charset="UTF-8"></script> -->
-  <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='cssem.css')}}">
     
   </head>
-  <body style="background-color:rgb(210,210,210);">
+  <body class="thing">
+    <div class="fig">  
     <nav class="naba">
       <ul>
         <br>
         <form action="/logout_user" method="post">
-              <button class="" type="submit" style="float: right;position: absolute;right: 55px; background: none;outline: none;color: white;border: none;">Logout</button>   <!--DEBUG LATER -->
+              <button class="" type="submit" style="float: right;position: absolute;right: 55px; background: none;outline: none;color: white;border: none;">Logout</button>
         </form> 
         <br>
       </ul>
@@ -35,18 +32,18 @@
           <!-- action de de tuhich -->
             <form class="" action="/subjectpage1" method="POST">       <!--FORM for gsk-->
               <br>
-               <b>Target : </b><b><input step = 0.01 style="background-color: rgb(232, 235, 199)" id="300" type="number" placeholder="cgpa" required name="target" min="1" max="10"></b><br>
+               <b><input style="width: 11%;font-size: 14px" step = 0.01  id="300" type="number" placeholder="Target-cgpa" required name="target" min="1" max="10"></b><br>
               <br>
-             <b> <input required name="latest_internal" placeholder="Latest Internal" type="number" style="background-color: rgb(232, 235, 199)">
+             <b> <input style="width: 13%;font-size: 14px;" required name="latest_internal" placeholder="Latest Internal" type="number" >
               </b><br><br>
-              <b> Enter marks for:</b><br>
+              <b style="color: #4caf50;"> Enter marks for:</b><br>
                 <div id="table1">
                   <div class="row">
                     <div class="col-xs-6">
                         <label> Engineering Mathematics-I: </label>
                     </div>
                     <div class="col-xs-6">
-                        <b><input style="background-color: rgb(232, 235, 199)" type="number" required name="1"></b><br>
+                        <b><input type="number" required name="1"></b><br>
                     </div>
                   </div>
                   <div class="row">
@@ -54,7 +51,7 @@
                         <label> Engineering Physics: </label>
                     </div>
                     <div class="col-xs-6">
-                        <b><input style="background-color: rgb(232, 235, 199)" id="2" type="number" required name="2"></b><br>
+                        <b><input  id="2" type="number" required name="2"></b><br>
                     </div>
                   </div>
                   <div class="row">
@@ -62,7 +59,7 @@
                         <label> Engineering Mechanics: </label>
                     </div>
                     <div class="col-xs-6">
-                        <b><input style="background-color: rgb(232, 235, 199)" id="3" type="number" required name="3"></b><br>
+                        <b><input  id="3" type="number" required name="3"></b><br>
                     </div>
                   </div>
                   <div class="row">
@@ -70,7 +67,7 @@
                         <label> Mechanical Engineering Science: </label>
                     </div>
                     <div class="col-xs-6">
-                        <b><input style="background-color: rgb(232, 235, 199)" id="4" type="number" required name="4"></b><br>
+                        <b><input  id="4" type="number" required name="4"></b><br>
                     </div>
                   </div>
                   <div class="row">
@@ -78,7 +75,7 @@
                         <label> Basic Electrical Engineering: </label>
                     </div>
                     <div class="col-xs-6">
-                        <b><input style="background-color: rgb(232, 235, 199)" id="5" type="number" required name="5"></b><br>
+                        <b><input  id="5" type="number" required name="5"></b><br>
                     </div>
                   </div>
                   <div class="row">
@@ -86,32 +83,28 @@
                         <label> Introduction to Engineering Design: </label>
                     </div>
                     <div class="col-xs-6">
-                        <b><input style="background-color: rgb(232, 235, 199)" id="6" type="number" required name="6"></b><br>
+                        <b><input  id="6" type="number" required name="6"></b><br>
                     </div>
                   </div>
                 </div>
                 <div class="row" style="padding-top:10px;">
-                  <div class="col-xs-2">
-                    <br>
-                      <label> Attendance </label>
-                  </div>
                   <div class="col-xs-8 col-xs-offset-0"><br>
-                      <b><input style="background-color: rgb(232, 235, 199)" id="7" type="number" required name="attendance" style="width:25%;"></b><br>
+                      <b><input  style="width: 19%;font-size: 15px" id="7" type="number" placeholder="Attendance" required name="attendance" style="width:25%;"></b><br>
                   </div>
                 </div>
-                <button class="w3-button w3-black w3-section w3-left" type="submit">Enter</button>
+                <button class="w3-button w3-green w3-section w3-left" type="submit">Enter</button>
             </form>
         </div>
         <div class="col-xs-2">
           <div class="row"><br>
-            <table>
+            <table style="float: right;margin: 20px 0px">
               <tr>
-                <td >USN &nbsp &nbsp </td> &nbsp &nbsp &nbsp
-                <th class="bb" style="color: #111;text-transform: uppercase;">{{ result[0] }}</th>
+                <td style="color: #4caf50">USN &nbsp &nbsp </td> &nbsp &nbsp &nbsp
+                <th class="bb" style="color:#4caf50 ;text-transform: uppercase;">{{ result[0] }}</th>
               </tr>
               <tr>
-                <td>SEM</td>
-                <th style="color: #111;text-transform: uppercase;">{{ result[1] }}</th>
+                <td style="color: #4caf50">SEM</td>
+                <th style="color: #4caf50;text-transform: uppercase;">{{ result[1] }}</th>
               </tr>
             </table>
           </div>
@@ -131,5 +124,6 @@
         </div>
       </div>
     </div>
+  </div>
   </body>
 </html>

@@ -2,7 +2,7 @@
   body {
   background: #fafafa;
   color: #333333;
-  margin-top: 5rem;
+  /*margin-top: 5rem;*/
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -10,7 +10,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-steel {
-  background-color: #5f788a;
+  background-color: black;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -78,4 +78,83 @@ a.article-title:hover {
 
 .account-heading {
   font-size: 2.5rem;
+}
+body{
+  margin:0;
+}
+h4{
+  line-height: 600px;
+  font-size: 45px;
+  margin:auto;
+  color: #111111;
+}
+.thing{
+  background-image:url("https://cdn.hipwallpaper.com/i/43/71/KcmlRo.jpg");
+  
+  background-size:cover;
+  text-align: center;
+  height: 100vh;
+}
+.fig{
+  background-image:linear-gradient(#111,#111);
+  opacity: 0.95;
+  background-size: cover;
+  height: 100vh; 
+  text-align: center;
+}
+
+.login-box{
+  width: 220px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color: white;
+}
+.login-box h1{
+  font-size: 30px;
+  border-bottom: 3px solid #4caf50;
+  margin-bottom: 20px;
+  padding: 10px 0
+}
+.textbox{
+  width:100%;
+  overflow:hidden;
+  font-size: 15px;
+  padding: 5px 0;
+  margin:6px 0;
+  border-bottom: 1px solid #4caf50;
+}
+.textbox input{
+  border:none;
+  outline: none;
+  background: none;
+  color:white;
+  font-size: 18px;
+  width: 80%;
+  float left: 
+  margin:0 10px;
+}
+.btn{
+  width: 100%;
+  background:none;
+  border:2px solid #4caf50;
+  color: white;
+  padding: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  margin:12px 0;
+  background-color: #4caf50;
+}
+.blank{
+  padding-bottom: 8px;
+  border:none;
+  outline: none;
+  background:none;
+  color: white;
+  font-size: 18px;
+  width: 80%;
+  float: left;
+  margin: 0 10px;
+  border-bottom: 1px solid #4caf50;
 }

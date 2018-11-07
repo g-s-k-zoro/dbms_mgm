@@ -14,62 +14,58 @@
 
 	<title>Additional Info</title>
 </head>
-<body style="background-color:rgb(210,210,210);">
-	<header class="site-header">
-		<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-			<div class="container">
-				<div class="collapse navbar-collapse" id="navbarToggle">
-					<div class="navbar-nav mr-auto">
-						<a class="nav-item nav-link" style="color: white" href="/">Home</a>
-					</div>
-					<div class="navbar-nav">
-            <p style="float: right;position :absolute ;right: 55px; bottom:0%;">
-              <a class="" style="color: white;"  href="https://www.youtube.com">Logout</a>
-            </p> 
-					</div>	
-				</div>
-			</div>
-		</nav>
-	</header>
+<body class="thing">
+  <div class="fig">
+  	<header class="site-header">
+  		<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+  			<div class="container">
+  				<div class="collapse navbar-collapse" id="navbarToggle">
+  					<div class="navbar-nav mr-auto">
+  						<a class="nav-item nav-link" style="color: white" href="/">Home</a>
+  					</div>
+  					<div class="navbar-nav">
+              <p style="float: right;position :absolute ;right: 55px; bottom:0%;">
+                <a class="" style="color: white;"  href="/logout_user">Logout</a>
+              </p> 
+  					</div>	
+  				</div>
+  			</div>
+  		</nav>
+  	</header>
 
-      <div style="padding: 70px">
+      <div class="login-box" style="width: 50%;height: 70vh">
         <form action="/additional.html" method ='POST'>
-            <legend class="border-bottom mb-4">Additional Details</legend>
-          <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
-            <!-- <div class="w3-half">
-              <input class="w3-input w3-border" type="text" placeholder="Name" required name="name">
-            </div> -->
-            <div class="w3-half">
-              <input class="w3-input w3-border" type="number" placeholder="CGPA" required name="cgpa">
+          <h1 style="color: white;">Additional Info</h1>
+            <div class="textbox" style="padding-bottom:0px;">
+              <input class="blank" type="number" placeholder="CGPA" required name="cgpa" style="width: 95%">
             </div>
-          </div><br>
 
-          <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
-            <!-- <div class="w3-half">
-              <input class="w3-input w3-border" type="text" placeholder="Name" required name="name">
-            </div> -->
-            <div class="w3-half">
-              <input class="w3-input w3-border" type="number" placeholder="Update Sem" required name="update_sem">
-              <small style="color: red;"> &nbsp &nbsp (current Sem)</small>
+            <div class="textbox" style="padding-bottom:0px">
+              <input class="blank" type="number" placeholder="Update Sem" required name="update_sem" style="width: 95%">
+              
             </div>
-          </div>
-
-            <input class="w3-input w3-border" type="number" placeholder="No.of Coding Competitions Won" required name="coding"><br>
-             <input class="w3-input w3-border" type="text" placeholder="Hackerrank_Profile" required name="hackerrank"><br>
-             <input class="w3-input w3-border" type="number" placeholder="College Club Membership Status (out of 5)" required name="membership_status"><br>
-             <input class="w3-input w3-border" type="number" placeholder="No. of Projects Completed"
-             required name="projects"><br>
-              <div class="form-group">
-                <button class="btn btn-outline-info" id="77" name="That's it">Submit</button>
-              </div>
+            <small style="color: red;float: left;"> &nbsp &nbsp (current Sem)</small>
+            <div class="textbox" style="padding-bottom:0px">
+              <input class="blank" type="number" placeholder="No.of Coding Competitions Won" required name="coding" style="width: 95%"><br>
+            </div>
+            <div class="textbox" style="padding-bottom:0px">
+             <input class="blank" type="text" placeholder="Hackerrank_Profile" required name="hackerrank" style="width: 95%">
+            </div>
+            <div class="textbox" style="padding-bottom:0px"> 
+             <input class="blank" type="number" placeholder="College Club Membership Status (out of 5)" required name="membership_status" style="width: 95%">
+            </div>
+            <div class="textbox" style="padding-bottom:0px"> 
+             <input class="blank" type="number" placeholder="No. of Projects Completed"
+             required name="projects" style="width: 95%"><br>
+            </div> 
+              <button class="btn" id="77" type="submit" style="width: 30%">Submit</button>
         </form>
 
- 
- <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    </div>
+  </div>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
 </body>
 </body>
 </html>

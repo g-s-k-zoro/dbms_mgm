@@ -144,6 +144,7 @@ def graph_plot(internal_status, target):
 		elif(rem == 1):
 			gpa.append(target+.05)
 
+
 	plt.plot(internal,gpa)
 	plt.xlabel('Tests')
 	plt.ylabel('GPA')
@@ -254,6 +255,8 @@ def insert_new_stud():
 		insert_entry(usn, sem, email, pswd)
 
 		return render_template('login.html')
+
+
 
 #verifying the login function
 @app.route("/loginform", methods = ['POST', 'GET'])				#from login.html
@@ -455,6 +458,18 @@ def update_stud_sem():
 @app.route("/logout_user",methods = ['POST','GET'])
 def logout_function():
 	return render_template('home.html')
+
+@app.route("/leader",methods=['POST','GET'])	
+def leader():
+	return render_template('leaderb.html')
+
+@app.route("/testimonials",methods=['POST','GET'])
+def testimonials():
+	return render_template('testimonials.html')
+
+@app.route("/testimonials1",methods=['POST','GET'])
+def testimonials1():
+	return render_template('testimonials1.html')
 
 if __name__ == '__main__':
 	app.run(debug=True)

@@ -8,17 +8,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Marks Entry</title>
-    <!-- <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/2CE96B1A-C33C-704A-818A-7AF79E84B972/main.js" charset="UTF-8"></script> -->
-  <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='cssem.css')}}">
   </head>
 
-  <body style="background-color:rgb(210,210,210);">
+  <body class="thing">
+    <div class="fig">
     <nav class="naba">
       <ul>
         <br>
@@ -35,19 +32,19 @@
           <!-- action dekh le -->
             <form class="" action="/subjectpage2" method="POST">
               <br>
-              <b>Target : </b><input step=0.01 style="background-color: rgb(232, 235, 199)" id="13" type="number" placeholder="cgpa" required name="target" min="1" max="10"><br>
+              <b><input step=0.01 style="width: 11%;font-size: 14px" id="13" type="number" placeholder="Target-cgpa" required name="target" min="1" max="10"></b><br>
               <br>
-              <b> <input required name="latest_internal" placeholder="Latest Internal" type="number" style="background-color: rgb(232, 235, 199)">
+              <b> <input style="width: 13%;font-size: 14px" required name="latest_internal" placeholder="Latest Internal" type="number" >
               </b><br><br>
 
-              <b> Enter marks for:</b><br>
+              <b style="color: #4caf50;"> Enter marks for:</b><br>
                 <div id="table1">
                   <div class="row">
                     <div class="col-xs-6">
                         <label> Engineering Mathematics-II: </label>
                     </div>
                     <div class="col-xs-6">
-                        <input style="background-color: rgb(232, 235, 199)" id="15" type="number" required name="1"><br>
+                        <input id="15" type="number" required name="1"><br>
                     </div>
                   </div>
                   <div class="row">
@@ -55,7 +52,7 @@
                         <label> Engineering Chemistry: </label>
                     </div>
                     <div class="col-xs-6">
-                        <input style="background-color: rgb(232, 235, 199)" id="16" type="number" required name="2"><br>
+                        <input  id="16" type="number" required name="2"><br>
                     </div>
                   </div>
                   <div class="row">
@@ -63,7 +60,7 @@
                         <label> Computer Concepts and C programming: </label>
                     </div>
                     <div class="col-xs-6">
-                        <input style="background-color: rgb(232, 235, 199)" id="17" type="number" required name="3"><br>
+                        <input  id="17" type="number" required name="3"><br>
                     </div>
                   </div>
                   <div class="row">
@@ -71,7 +68,7 @@
                         <label> Electronics Fundamental: </label>
                     </div>
                     <div class="col-xs-6">
-                        <input style="background-color: rgb(232, 235, 199)" id="18" type="number name="" required name="4"><br>
+                        <input  id="18" type="number name="" required name="4"><br>
                     </div>
                   </div>
                   <div class="row">
@@ -79,7 +76,7 @@
                         <label> Computer aided engineering drawing: </label>
                     </div>
                     <div class="col-xs-6">
-                        <input style="background-color: rgb(232, 235, 199)" id="19" type="number" required name="5"><br>
+                        <input  id="19" type="number" required name="5"><br>
                     </div>
                   </div>
                   <div class="row">
@@ -87,32 +84,28 @@
                         <label> English enhancement course: </label>
                     </div>
                     <div class="col-xs-6">
-                        <input style="background-color: rgb(232, 235, 199)" id="20" type="number" required name="6"><br>
+                        <input  id="20" type="number" required name="6"><br>
                     </div>
                   </div>
                 </div>
                 <div class="row" style="padding-top:10px;">
-                  <div class="col-xs-2">
-                    <br>
-                      <label> Attendance </label>
-                  </div>
                   <div class="col-xs-8 col-xs-offset-0"><br>
-                      <b><input style="background-color: rgb(232, 235, 199)" id="7" type="number" required name="attendance" style="width:25%;"></b><br>
+                      <b><input style="width: 19%;font-size: 15px" id="7" type="number" placeholder="Attendance" required name="attendance" style="width:25%;"></b><br>
                   </div>
                 </div>
-                <button class="w3-button w3-black w3-section w3-left" type="submit">Enter</button>
+                <button class="w3-button w3-green w3-section w3-left" type="submit">Enter</button>
             </form>
         </div>
         <div class="col-xs-2">
           <div class="row"><br>
-            <table>
+            <table style="float: right;margin: 20px 0px">
               <tr>
-                <td >USN &nbsp &nbsp </td> &nbsp &nbsp &nbsp
-                <th class="bb" style="color: #111;text-transform: uppercase;">{{ result[0] }}</th>
+                <td style="color: #4caf50">USN &nbsp &nbsp </td> &nbsp &nbsp &nbsp
+                <th class="bb" style="color: #4caf50;text-transform: uppercase;">{{ result[0] }}</th>
               </tr>
               <tr>
-                <td>SEM</td>
-                <th style="color: #111;text-transform: uppercase;">{{ result[1] }}</th>
+                <td style="color: #4caf50">SEM</td>
+                <th style="color: #4caf50;text-transform: uppercase;">{{ result[1] }}</th>
               </tr>
             </table>
           </div>
@@ -131,5 +124,6 @@
         </div>
       </div>
     </div>
+  </div>
   </body>
 </html>

@@ -1,0 +1,148 @@
+.naba{
+	background-color: #111;
+	border-color: #E7E7E7;
+	position: relative;
+	top: 0;
+	width: 100%;
+	height: 9vh;
+}
+
+
+.table_area
+{
+	margin-top: 50px;
+}
+
+
+
+.team-man
+{
+	position: absolute;
+	left: 50%;
+	margin-left: -50px;
+	top: -50px;
+	overflow: hidden;
+	min-height: 100px;
+	min-width: 100px;
+	height: 100px;
+	width: 100px;
+	border: 10px solid deepskyblue;
+	border-radius: 50%;
+
+}
+
+.team-man img
+{
+	width: 100%;
+	height: 100%;
+	min-height: 100%;
+	min-width: 100%;
+	border-radius: 50%
+}
+
+.team-block h3
+{
+	color:deepskyblue;
+	font-size: 20px;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding-top: 70px;
+	margin-bottom: 5px;
+}
+
+.team-block span
+{
+	color: #6c6c6c;
+	font-size: 16px;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+
+.team-block p
+{
+	color: dimgrey;
+	font-size: 14px;
+	padding: 25px 15px;
+	line-height: 24px;
+
+
+}
+.team-description
+{
+	background-color: #f5f5f5;
+
+}
+
+.team-social-network
+{
+	text-align: center;
+	padding-bottom: 15px;
+}
+
+.team-social-network a
+{
+	margin: 0 6px;
+
+}
+
+.team-social-network i
+{
+	height: 40px;
+	width: 40px;
+	background: white;
+	text-align: center;
+	color: deepskyblue;
+	border-radius: 50%;
+	border: 3px solid #c4e5f0;
+	padding-top: 10px;
+
+}
+
+.team-block:hover .team-description
+{
+	background-color: deepskyblue;
+	color: white;
+	transition: 0.3s ease;
+}
+
+
+.team-block:hover .title h3,
+.team-block:hover .title span
+{
+	color: white;
+	transition: .3s ease;
+}
+
+.team-block:hover .team-description p
+{
+	color:#f9f9f9;
+	transition: .3s ease;
+
+}
+
+.team-block:hover .team-social-network i
+{
+	border-color: white;
+	background-color: deepskyblue;
+	color: white;
+	transition: .3s ease;
+
+}
+.thing{
+  background-image:url("https://cdn.hipwallpaper.com/i/43/71/KcmlRo.jpg");
+  
+  background-size:cover;
+  text-align: center;
+  height: 100vh;
+}
+.fig{
+  background-image:linear-gradient(#111,#111);
+  opacity: 0.95;
+  background-size: cover;
+  height: cover; 
+  text-align: center;
+}
+.atright{
+	position: relative;
+	left: 0%;
+}
