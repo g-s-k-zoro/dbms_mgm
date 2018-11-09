@@ -4,12 +4,12 @@ def create_db():
 	#one time execution function
 	#all required tables have been created here, some may noit have gsk's entry
 	conn, cur = connect()
-	cur.execute("create table stud_marks (usn varchar(10) primary key, semester int, sub_1 DECIMAL(2,4), sub_2 DECIMAL(2,4), sub_3 DECIMAL(2,4), sub_4 DECIMAL(2,4), sub_5 DECIMAL(2,4), sub_6 DECIMAL(2,4), credit_seq varchar(6))")
+	#cur.execute("create table stud_marks (usn varchar(10) primary key, semester int, sub_1 DECIMAL(2,4), sub_2 DECIMAL(2,4), sub_3 DECIMAL(2,4), sub_4 DECIMAL(2,4), sub_5 DECIMAL(2,4), sub_6 DECIMAL(2,4), credit_seq varchar(6))")
 	#cur.execute("insert into stud_marks values(?, ?, ?, ?, ?, ?, ?, ?, ?)", ["4NI16CS036", 5, 21, 25, 25, 17.5, 23, 18, "344444"])
-	cur.execute("create table true_pot (usn varchar(10) primary key, cgpa DECIMAL(2,2), number_of_coding_comp_won int, hackerrank_score int, club_membership_status int, no_of_projects int)")
-	cur.execute("create table placement_info (company_name varchar(30), tier int, cut_off DECIMAL(2,2), avg_number_placed int, internship_status int)")
+	#cur.execute("create table true_pot (usn varchar(10) primary key, cgpa DECIMAL(2,2), number_of_coding_comp_won int, hackerrank_score int, club_membership_status int, no_of_projects int)")
+	#cur.execute("create table placement_info (company_name varchar(30), tier int, cut_off DECIMAL(2,2), avg_number_placed int, internship_status int)")
 	cur.execute("create table leaderboard (usn varchar(10), true_pot_score DECIMAL(2,4))")
-	cur.execute("create table account_detail (usn varchar(10), semester int, email varchar(50), password varchar(100))")
+	#cur.execute("create table account_detail (usn varchar(10), semester int, email varchar(50), password varchar(100))")
 	conn.commit()
 	conn.close()
 
@@ -109,6 +109,17 @@ def update_marks(usn1 = 'null', semester = 'null', sub_1 = 'null', sub_2='null' 
 	conn.commit()
 	conn.close()
 
+#checking if entry for truepot exists
+def exist_check(usn1):
+	conn, cur = connect()
+	cur.execute('select * from true_pot where usn = ?', (usn1, ))
+	data = cur.fetchall()
+	conn.close()
+	if(data):
+		return 0
+	else:
+		return 1
+
 #additional details for true potential calculation
 def insert_truepot(usn = 'null', cgpa = 'null', number_of_coding_comp_won = 'null', hackerrank_score = 'null', club_membership_status = 'null', no_of_projects = 'null'):
 	
@@ -120,8 +131,8 @@ def insert_truepot(usn = 'null', cgpa = 'null', number_of_coding_comp_won = 'nul
 #function for updating details for evaluation of truepot
 def update_truepot(usn = 'null', cgpa = 'null', number_of_coding_comp_won = 'null', hackerrank_score = 'null', club_membership_status = 'null', no_of_projects = 'null', new_sem = 'null'):
 	conn, cur = connect()
-	cur.execute('update truepot set cgpa = ?, number_of_coding_comp_won = ?, hackerrank_score = ?, club_membership_status = ?, no_of_projects = ?, where usn = ?', [cgpa, number_of_coding_comp_won, hackerrank_score, club_membership_status, no_of_projects, usn])
-	cur.execute('update account_detail set semester = ?, where usn =? and semester != ?',[new_sem, usn, new_sem])
+	cur.execute('update true_pot set cgpa = ?, number_of_coding_comp_won = ?, hackerrank_score = ?, club_membership_status = ?, no_of_projects = ? where usn = ?', [cgpa, number_of_coding_comp_won, hackerrank_score, club_membership_status, no_of_projects, usn])
+	cur.execute('update account_detail set semester = ? where usn =? and semester != ?',[new_sem, usn, new_sem])
 	conn.commit()
 	conn.close()
 
@@ -136,8 +147,35 @@ def insert_company_det(company_name, tier, cut_off, avg_number_placed, internshi
 def insert_leaderboard(usn = 'null', true_pot_score = 'null'):
 	conn, cur = connect()
 	cur.execute('insert into leaderboard values(?, ?)', [usn, true_pot_score])
+	#cur.execute('select count(*) from leaderboard')
+	#N = cur.fetchall()
+	#N = int(N)
 	conn.commit()
 	conn.close()
+	#return N
+
+def update_leaderboard(usn = 'null', true_pot_score = 'null'):	#maybe remove the N
+	conn, cur = connect()
+	cur.execute('update leaderboard set true_pot_score = ? where usn = ?', [true_pot_score, usn])
+	#cur.execute('select count(*) from leaderboard')
+	#N = cur.fetchall()
+	#N = int(N)
+	conn.commit()
+	conn.close()
+	#return N
+
+def sorted_score():
+	conn, cur = connect()
+	cur.execute("select * from leaderboard order by true_pot_score desc")
+	data = cur.fetchall();
+	cur.execute("select count(usn) from leaderboard")
+	n = cur.fetchall()
+	n1 = int(n[0][0])
+	conn.close()
+	# for row in data:
+	# 	print(row[0])
+	# 	print(row[1])
+	return data, n1
 
 #---------------DELETE records....only from marks table till now: May be you can add triggers here-----#
 def delete_stud (usn):

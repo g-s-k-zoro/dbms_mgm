@@ -9,10 +9,31 @@ sem_epic = None
 internal_status = None
 target = None
 arr = []
+N = None
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 #create_db()		#IT'S DONE, DO NOT RE-EXECUTE:	only to be executed once, be careful!!!!! 
+
+def true_score(cgpa, code, hckr, clbsts, proj):
+	return ((7*cgpa + 3*code + 2*hckr + 3*clbsts + 5*proj)*1.0)/20
+
+def get_values():
+	data, n = sorted_score()
+	base_rating = 600
+	avg_rating = (base_rating - (n+1) - 2)
+	r = 1
+	dat1 = []
+	for row in data:
+		nf = float(avg_rating*1.0*((base_rating - (r-1)*2) - avg_rating)/(base_rating - (r-1)*2))
+		print(row[0])
+		temp = row[1]
+		temp = float(temp)
+		temp = temp*nf
+		dat1.append([row[0], temp])
+		r+=1
+
+	return dat1
 
 #function for taking in the data from subject page from different sems
 def sem_intake(sem_no):
@@ -301,6 +322,7 @@ def check_credentials():
 def insert_additional():
 	global usn_epic
 	global sem_epic
+	global N
 	if(request.method == 'POST'):
 		cgpa = request.form['cgpa']
 		code = request.form['coding']
@@ -308,28 +330,37 @@ def insert_additional():
 		clbsts = request.form['membership_status']
 		proj = request.form['projects']
 		new_sem = request.form['update_sem']
-		sem_epic = new_sem
+		sem_epic = int(new_sem)							#subtle motherfucker!!!
 		cur_status = exist_check(usn_epic)
+
+		normal = true_score(float(cgpa), int(code), int(hckr), int (clbsts), int(proj))
+		
 		if(cur_status):
 			insert_truepot(usn_epic, cgpa, code, hckr, clbsts, proj)
+			insert_leaderboard(usn_epic,normal)
+			print("insert leaderboard check")
 		else:
 			update_truepot(usn_epic, cgpa, code, hckr, clbsts, proj, new_sem)
+			update_leaderboard(usn_epic,normal)
+			print("update leaderboard check")
 
 		# return render_template('.html')		#same page rendering, lets see what happens
 		if(sem_epic == 1):
-			return	render_template('1sem.html')
+			return	render_template('1sem.html',result=[usn_epic,sem_epic])	
 		elif(sem_epic == 2):
-			return	render_template('2sem.html')
+			return	render_template('2sem.html',result=[usn_epic,sem_epic])
 		elif(sem_epic == 3):
-			return	render_template('3sem.html')
+			return	render_template('3sem.html',result=[usn_epic,sem_epic])
 		elif(sem_epic == 4):
-			return	render_template('4sem.html')
+			return	render_template('4sem.html',result=[usn_epic,sem_epic])
 		elif(sem_epic == 5):
-			return	render_template('5sem.html')
+			return	render_template('5sem.html',result=[usn_epic,sem_epic])
 		elif(sem_epic == 6):
-			return	render_template('6sem.html')
+			return	render_template('6sem.html',result=[usn_epic,sem_epic])
 		elif(sem_epic == 7):
-			return	render_template('7sem.html')		
+			return	render_template('7sem.html',result=[usn_epic,sem_epic])
+
+		return render_template('home.html')		
 
 @app.route("/subjectpage1", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks1():
@@ -339,7 +370,7 @@ def insert_marks1():
 		
 		internal_status, target = sem_intake(1)
 		graph_plot(internal_status, target)
-		return render_template('gp_plot.html')
+		return render_template('additional.html')
 
 @app.route("/subjectpage2", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks2():
@@ -349,7 +380,7 @@ def insert_marks2():
 
 		internal_status, target = sem_intake(2)
 		graph_plot(internal_status, target)
-		return render_template('gp_plot.html')
+		return render_template('additional.html')
 
 @app.route("/subjectpage3", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks3():
@@ -359,7 +390,7 @@ def insert_marks3():
 
 		internal_status, target = sem_intake(3)
 		graph_plot(internal_status, target)
-		return render_template('gp_plot.html')
+		return render_template('additional.html')
 
 @app.route("/subjectpage4", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks4():
@@ -369,7 +400,7 @@ def insert_marks4():
 
 		internal_status, target = sem_intake(4)
 		graph_plot(internal_status, target)
-		return render_template('gp_plot.html')
+		return render_template('additional.html')
 
 @app.route("/subjectpage5", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks5():
@@ -379,7 +410,7 @@ def insert_marks5():
 
 		internal_status, target = sem_intake(5)
 		graph_plot(internal_status, target)
-		return render_template('gp_plot.html')
+		return render_template('additional.html')
 
 @app.route("/subjectpage6", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks6():
@@ -389,7 +420,7 @@ def insert_marks6():
 
 		internal_status, target = sem_intake(6)
 		graph_plot(internal_status, target)
-		return render_template('gp_plot.html')
+		return render_template('additional.html')
 
 @app.route("/subjectpage7", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks7():
@@ -399,7 +430,7 @@ def insert_marks7():
 
 		internal_status, target = sem_intake(7)
 		graph_plot(internal_status, target)
-		return render_template('gp_plot.html')
+		return render_template('additional.html')
 
 @app.route("/subj_plot", methods = ['POST', 'GET'])
 def plot_sub():
@@ -459,9 +490,10 @@ def update_stud_sem():
 def logout_function():
 	return render_template('home.html')
 
-@app.route("/leader",methods=['POST','GET'])	
+@app.route("/leader",methods=['POST','GET'])
 def leader():
-	return render_template('leaderb.html')
+	data = get_values()
+	return render_template('leaderb.html',result = data)
 
 @app.route("/testimonials",methods=['POST','GET'])
 def testimonials():
