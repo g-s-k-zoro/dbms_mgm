@@ -1,6 +1,8 @@
 from flask import Flask,render_template,url_for,flash,redirect, request
 from queries_1 import *
 import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 
@@ -10,11 +12,19 @@ internal_status = None
 target = None
 arr = []
 N = None
+for_company_gpa = []
+for_company_internal = []
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 #create_db()		#IT'S DONE, DO NOT RE-EXECUTE:	only to be executed once, be careful!!!!! 
 
+#temp_placement()		#one time execution
+
+#create_company_view()
+# dele_details()
+# create_trigger()
+print_additional()
 def true_score(cgpa, code, hckr, clbsts, proj):
 	return ((7*cgpa + 3*code + 2*hckr + 3*clbsts + 5*proj)*1.0)/20
 
@@ -100,9 +110,11 @@ def sem_intake(sem_no):
 
 
 #function for plotting the overall target goal-graph
-def graph_plot(internal_status, target):
+def graph_plot(internal_status = 99, target = 99):
 	global usn_epic
 	global arr
+	global for_company_gpa
+	global for_company_internal
 	data = plot_graph(usn_epic)
 	internal = [1,2,3,4]
 	gpa = []
@@ -164,13 +176,21 @@ def graph_plot(internal_status, target):
 			gpa.append(target-.05)
 		elif(rem == 1):
 			gpa.append(target+.05)
-
+	for_company_internal.append(0)
+	for_company_gpa.append(0)
+	for i in internal:
+		for_company_internal.append(i)
+	for i in gpa:
+		for_company_gpa.append(i)
+	print(internal)
+	print(gpa)
+	print(for_company_internal)
+	print(for_company_gpa)
 
 	plt.plot(internal,gpa)
 	plt.xlabel('Tests')
 	plt.ylabel('GPA')
 	plt.title('Test Performance')
-	#os.remove('./static/graph.png')
 	plt.savefig('./static/graph.png')
 	plt.close()
 	return True 					#purpose, for error correction: no return response
@@ -330,17 +350,21 @@ def insert_additional():
 		clbsts = request.form['membership_status']
 		proj = request.form['projects']
 		new_sem = request.form['update_sem']
-		sem_epic = int(new_sem)							#subtle motherfucker!!!
+		new_sem = int(new_sem)
+		sem_epic = new_sem							#subtle motherfucker!!!
 		cur_status = exist_check(usn_epic)
 
 		normal = true_score(float(cgpa), int(code), int(hckr), int (clbsts), int(proj))
-		
+		print_additional()
 		if(cur_status):
 			insert_truepot(usn_epic, cgpa, code, hckr, clbsts, proj)
 			insert_leaderboard(usn_epic,normal)
 			print("insert leaderboard check")
 		else:
 			update_truepot(usn_epic, cgpa, code, hckr, clbsts, proj, new_sem)
+			print_additional()
+			if(new_sem>=8):
+				return render_template('home.html')
 			update_leaderboard(usn_epic,normal)
 			print("update leaderboard check")
 
@@ -444,7 +468,46 @@ def plot_sub():
 
 		return render_template('gp_plot.html')
 
+@app.route("/comp_plot", methods = ['POST', 'GET'])
+def plot_comp():
+	global usn_epic
+	global sem_epic
+	global for_company_gpa
+	global for_company_internal
+	if(request.method == 'POST'):
+		c_name = request.form['cmp']
+		c_name = str(c_name)
 
+		c_gpa = obtain_cutoff(c_name)
+		print(len(for_company_gpa))
+		python_sux = [c_gpa, c_gpa, c_gpa, c_gpa]
+		python_sux1 = [0,1,3,4]
+		# for_company_internal = [0,1,2,3,4]
+		# for_company_gpa = [0,9.533,9.4,9.1,8.2]
+		print(for_company_internal)
+		print(for_company_gpa)
+		#fig, ax = plt.subplots()
+		plt.plot(python_sux1,python_sux,color = "red")
+		plt.plot(for_company_internal, for_company_gpa, color = "blue")	#	subplot search write the html code for displaying table from backend
+		plt.xlabel('Tests')
+		plt.ylabel('GPA')
+		plt.title('Test Performance')
+		plt.savefig('./static/graph.png')
+		plt.close()
+		# for_company_internal = np.array(for_company_internal).reshape((len(for_company_internal),1))
+		# for_company_gpa = np.array(for_company_gpa).reshape((len(for_company_gpa),1))
+		# python_sux = np.array(python_sux).reshape((len(python_sux),1))
+		# python_sux1 = np.array(python_sux1).reshape((len(python_sux1),1))
+		# df = pd.DataFrame({'x1':for_company_internal, 'y1':for_company_gpa,'x2':python_sux1, 'y2':python_sux })
+		# plt.plot('x1','y1',data = df,color = "red")
+		# plt.plot('x2','y2',data = df,color = "blue")
+		# plt.xlabel('Tests')
+		# plt.ylabel('GPA')
+		# plt.title('Test Performance')
+		# plt.savefig('./static/graph.png')
+		# plt.close()
+
+	return render_template('gp_plot.html')
 #---------------------Temp check : function to remove cache-----------------#
 
 
@@ -488,6 +551,10 @@ def update_stud_sem():
 
 @app.route("/logout_user",methods = ['POST','GET'])
 def logout_function():
+	global for_company_internal
+	global for_company_gpa
+	for_company_internal = []
+	for_company_gpa = []
 	return render_template('home.html')
 
 @app.route("/leader",methods=['POST','GET'])
@@ -502,6 +569,12 @@ def testimonials():
 @app.route("/testimonials1",methods=['POST','GET'])
 def testimonials1():
 	return render_template('testimonials1.html')
+
+@app.route("/company",methods=['POST','GET'])
+def company():
+	conn, cur = connect()
+	data = show_company_view()
+	return render_template('table.html',result=data)
 
 if __name__ == '__main__':
 	app.run(debug=True)

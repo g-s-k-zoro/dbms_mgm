@@ -7,8 +7,8 @@ def create_db():
 	#cur.execute("create table stud_marks (usn varchar(10) primary key, semester int, sub_1 DECIMAL(2,4), sub_2 DECIMAL(2,4), sub_3 DECIMAL(2,4), sub_4 DECIMAL(2,4), sub_5 DECIMAL(2,4), sub_6 DECIMAL(2,4), credit_seq varchar(6))")
 	#cur.execute("insert into stud_marks values(?, ?, ?, ?, ?, ?, ?, ?, ?)", ["4NI16CS036", 5, 21, 25, 25, 17.5, 23, 18, "344444"])
 	#cur.execute("create table true_pot (usn varchar(10) primary key, cgpa DECIMAL(2,2), number_of_coding_comp_won int, hackerrank_score int, club_membership_status int, no_of_projects int)")
-	#cur.execute("create table placement_info (company_name varchar(30), tier int, cut_off DECIMAL(2,2), avg_number_placed int, internship_status int)")
-	cur.execute("create table leaderboard (usn varchar(10), true_pot_score DECIMAL(2,4))")
+	cur.execute("create table placement_info (company_name varchar(30), tier int, cut_off DECIMAL(2,2), avg_number_placed int, internship_status int)")
+	#cur.execute("create table leaderboard (usn varchar(10), true_pot_score DECIMAL(2,4))")
 	#cur.execute("create table account_detail (usn varchar(10), semester int, email varchar(50), password varchar(100))")
 	conn.commit()
 	conn.close()
@@ -22,6 +22,12 @@ def connect():
 	return conn, cur
 
 #entering the login details of the registered students
+
+def temp_placement():
+	conn, cur = connect()
+	cur.execute("insert into placement_info values('BOSCH',3,7.75,18,0),('HP',2,7,7,0),('CISCO',1,7,4,0),('INTUIT',1,7.5,1,0),('DELL',2,7.75,3,0),('SHELL',1,7,3,0),('SAP_LABS',1,7.5,2,0),('AMAZON',1,7.5,7,0),('HCL_TECHNOLOGIES',2,7,2,0),('ORACLE_SOLUTIONS',2,7.5,5,0),('NOKIA_INDIA_LTD',2,7.85,8,0);")
+	conn.commit()
+	conn.close()
 
 def insert_entry(usn1 = 'null', semester1 = 'null', email1 = 'null', password1 = 'null'):
 	conn, cur = connect()
@@ -177,6 +183,15 @@ def sorted_score():
 	# 	print(row[1])
 	return data, n1
 
+def obtain_cutoff(name):
+	conn, cur = connect()
+	cur.execute("select cut_off from placement_info where company_name = ?", (name, ))
+	data = cur.fetchall()
+	conn.close()
+	c_off = data[0][0]
+	c_off = float(c_off)
+	return c_off
+
 #---------------DELETE records....only from marks table till now: May be you can add triggers here-----#
 def delete_stud (usn):
 	conn, cur = connect()
@@ -255,6 +270,61 @@ def select_max():
 		print(i)
 	return True
 
+#______________________________________________________________________________________________________________________________
+	#views
+def create_company_view():
+	conn, cur = connect()
+	cur.execute(''' create view disp_company as
+					select company_name,
+					tier,
+					avg_number_placed
+					from placement_info;''')
+	conn.commit()
+	conn.close()
+
+def show_company_view():
+	conn, cur = connect()
+	cur.execute('select * from disp_company')
+	data=cur.fetchall()
+	conn.close()
+	return data		
+
+def dele_details():
+	conn, cur = connect()
+	cur.execute('delete from placement_info')
+	conn.commit()
+	conn.close()
+
+#______________________________________________________________________________________________________________________________
+
+#triggers
+
+def create_trigger():
+	conn, cur = connect()
+
+	cur.execute(''' create trigger delete_trigger
+					after update
+					on account_detail
+					when new.semester >=8
+
+					BEGIN
+						declare the_usn
+						set @the_usn :=  (select usn from account_detail where semester>7)
+						delete from stud_marks where stud_marks.usn=the_usn;
+						delete from true_pot where true_pot.usn=the_usn;
+						delete from leaderboard where leaderboard.usn=the_usn;
+						delete from account_detail where usn=the_usn;
+
+					END;
+
+					''')
+	conn.commit()
+	conn.close()
+
+
+
+
+
 
 	#----------------------------------------------------------------------------------------------------------------------------#
 	#GRAPH STUFF#
@@ -270,3 +340,12 @@ def plot_graph(usn1):
 	print(data)
 
 	return data
+
+def print_additional():
+	conn, cur = connect()
+	cur.execute("describe account_detail")
+	data=cur.fetchall()
+
+	conn.close()
+	print("This is additional data")
+	print(data)
