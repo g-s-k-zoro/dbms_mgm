@@ -2,7 +2,27 @@
 <html>
 <head lang="en" dir="ltr">
 	<title>testimonials</title>
+	<style type="text/css">
+		.btn {
+		  border: 1px solid black;
+		  background-color: black;
+		  color: black;
+		  padding: 7px 14px;
+		  font-size: 16px;
+		  cursor: pointer;
+		}
+		.success {
+		  border:none;
+		  color: white;
+		}
 
+		.success:hover {
+		  background-color: #4CAF50;
+		  color: white;
+		  font-color:white;
+		  border-radius: 25px;
+		}
+	</style>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -19,10 +39,12 @@
 	 <nav class="naba">
       <ul>
         <br>
-        	<form action="/logout_user" method="post">
-        		<button class="" type="submit" style="float: left;position: relative; background: none;outline: none;color: white;border: none;">Home</button>
-           		<button class="" type="submit" style="float: right;position: absolute;right: 55px; background: none;outline: none;color: white;border: none;">Logout</button>		<!--DEBUG LATER -->
-           	</form>	
+        	<form action="/leader" method="post">
+        		<button class="btn success" type="submit" style="float: left;position: absolute;bottom:14%;left:3%;">Leaderboard</button>
+        	</form>
+        	<form action="/" method="">	
+           		<button class="btn success" type="submit" style="float:right;position: absolute;bottom:14%;right:3%;">Home</button>
+           	</form>		
         <br>
       </ul>
     </nav>
@@ -39,7 +61,7 @@
 	  		<div class="col-sm-6 col-sm-3">
 	  			<div class="team-block">
 	  				<div class="team-man">
-	  				<img src="https://dyn.web.whatsapp.com/pp?e=https%3A%2F%2Fpps.whatsapp.net%2Fv%2Ft61.11540-24%2F41905383_266724674184460_3128086318752464896_n.jpg%3Foe%3D5BBF81FD%26oh%3D79fe46182ff94ce6a893dc2a69c5053f&t=l&u=919945768058%40c.us&i=1539018108">
+	  				<img src="/static/images/vaishnovi.jpg">
 	  				</div>
 	  				<div class="team-description text-center">
 	  					<div class="title">
@@ -59,7 +81,7 @@
 	  		<div class="col-sm-6 col-sm-3">
 	  			<div class="team-block">
 	  				<div class="team-man">
-	  				<img src="C:\Users\LENO\Pictures\Screenshots\Screenshot (39).png">
+	  				<img src="/static/images/bidisha.jpg">
 	  				</div>
 	  				<div class="team-description text-center">
 	  					<div class="title">
@@ -80,7 +102,7 @@
 	  		<div class="col-sm-6 col-sm-3">
 	  			<div class="team-block">
 	  				<div class="team-man">
-	  				<img src="https://dyn.web.whatsapp.com/pp?e=https%3A%2F%2Fpps.whatsapp.net%2Fv%2Ft61.11540-24%2F41739790_1862622953792564_2612340023009214464_n.jpg%3Foe%3D5BBF7474%26oh%3D92a90b5ddb56e6027e95e99c1cf3dc45&t=l&u=918861602535%40c.us&i=1538836327">
+	  				<img src="/static/images/shruthi.jpg">
 	  				</div>
 	  				<div class="team-description text-center">
 	  					<div class="title">
@@ -101,7 +123,7 @@
 	  		<div class="col-sm-6 col-sm-3">
 	  			<div class="team-block">
 	  				<div class="team-man">
-	  				<img src="https://dyn.web.whatsapp.com/pp?e=https%3A%2F%2Fpps.whatsapp.net%2Fv%2Ft61.11540-24%2F41694996_305222906744696_4771911388312371200_n.jpg%3Foe%3D5BBF6CA8%26oh%3Da31c936a48a146375b99465ff033a056&t=l&u=919483478805%40c.us&i=1538157851">
+	  				<img src="/static/images/rohan.jpg">
 	  				</div>
 	  				<div class="team-description text-center">
 	  					<div class="title">

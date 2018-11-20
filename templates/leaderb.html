@@ -22,6 +22,25 @@
 			content:counter(tableCount);
 			counter-increment: tableCount;
 		}
+		.btn {
+		  border: 1px solid black;
+		  background-color: black;
+		  color: black;
+		  padding: 7px 14px;
+		  font-size: 16px;
+		  cursor: pointer;
+		}
+		.success {
+		  border:none;
+		  color: white;
+		}
+
+		.success:hover {
+		  background-color: #4CAF50;
+		  color: white;
+		  font-color:white;
+		  border-radius: 25px;
+		}
 	</style>
 </head>
 <body>
@@ -31,9 +50,11 @@
       <ul>
         <br>
         <!-- <p style="float: right;position :relative ;right: 55px;"> -->
-        	<form action="/logout_user" method="post">
-        		<button class="" type="submit" style="float: left;position: absolute; background: none;outline: none;color: white;border: none;">Home</button>
-           		<button class="" type="submit" style="float: right;position: absolute;right: 55px; background: none;outline: none;color: white;border: none;">Logout</button>		<!--DEBUG LATER -->
+        	<form action="/testimonials" method="post">
+        		<button class="btn success" type="submit" style="float: left;position: absolute;bottom:14%;left:3%;">Testimonials</button>
+        	</form>
+        	<form action="/" method="">	
+           		<button class="btn success" type="submit" style="float:right;position: absolute;bottom:14%;right:3%;">Home</button>
            	</form>	
         <br>
       </ul>
@@ -48,7 +69,7 @@
 
 			{% for row in result %}
 
-			<tr style="color: white">
+			<tr style="color: white;">
 				<th class="counterCell"></th>
 				<th>{{row[0]}}</th>
 				<th>{{row[1]}}</th>

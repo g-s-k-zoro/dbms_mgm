@@ -4,6 +4,13 @@
 	<!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style type="text/css">
+      a:hover{
+        background-color: #4CAF50;
+        text-decoration-color: black;
+        border-radius: 25px;
+      }
+    </style>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -21,12 +28,10 @@
   			<div class="container">
   				<div class="collapse navbar-collapse" id="navbarToggle">
   					<div class="navbar-nav mr-auto">
-  						<a class="nav-item nav-link" style="color: white" href="/">Home</a>
+  						<a class="nav-item nav-link" style="color: white;right: 30px;position: relative;" href="/leader">Leaderboard</a>
   					</div>
   					<div class="navbar-nav">
-              <p style="float: right;position :absolute ;right: 55px; bottom:0%;">
-                <a class="" style="color: white;"  href="/logout_user">Logout</a>
-              </p> 
+                <a style="color: white;padding: 7px 14px;left: 30%;position: relative;" class="nav-item-nav-link2"  href="/logout_user">Logout</a>
   					</div>	
   				</div>
   			</div>
@@ -49,10 +54,10 @@
               <input class="blank" type="number" placeholder="No.of Coding Competitions Won" required name="coding" style="width: 95%"><br>
             </div>
             <div class="textbox" style="padding-bottom:0px">
-             <input class="blank" type="text" placeholder="Hackerrank_Profile" required name="hackerrank" style="width: 95%">
+             <input class="blank" type="number" placeholder="Hackerrank_Score(out of 5)" min="0" max="5" required name="hackerrank" style="width: 95%">
             </div>
             <div class="textbox" style="padding-bottom:0px"> 
-             <input class="blank" type="number" placeholder="College Club Membership Status (out of 5)" required name="membership_status" style="width: 95%">
+             <input class="blank" type="number" placeholder="College Club Membership Status (out of 5)" min="0" max="5" required name="membership_status" style="width: 95%">
             </div>
             <div class="textbox" style="padding-bottom:0px"> 
              <input class="blank" type="number" placeholder="No. of Projects Completed"

@@ -7,9 +7,9 @@ def create_db():
 	#cur.execute("create table stud_marks (usn varchar(10) primary key, semester int, sub_1 DECIMAL(2,4), sub_2 DECIMAL(2,4), sub_3 DECIMAL(2,4), sub_4 DECIMAL(2,4), sub_5 DECIMAL(2,4), sub_6 DECIMAL(2,4), credit_seq varchar(6))")
 	#cur.execute("insert into stud_marks values(?, ?, ?, ?, ?, ?, ?, ?, ?)", ["4NI16CS036", 5, 21, 25, 25, 17.5, 23, 18, "344444"])
 	#cur.execute("create table true_pot (usn varchar(10) primary key, cgpa DECIMAL(2,2), number_of_coding_comp_won int, hackerrank_score int, club_membership_status int, no_of_projects int)")
-	cur.execute("create table placement_info (company_name varchar(30), tier int, cut_off DECIMAL(2,2), avg_number_placed int, internship_status int)")
+	#cur.execute("create table placement_info (company_name varchar(30), tier int, cut_off DECIMAL(2,2), avg_number_placed int, internship_status int)")
 	#cur.execute("create table leaderboard (usn varchar(10), true_pot_score DECIMAL(2,4))")
-	#cur.execute("create table account_detail (usn varchar(10), semester int, email varchar(50), password varchar(100))")
+	cur.execute("create table account_detail (usn varchar(10), semester int, email varchar(50), password varchar(100))")
 	conn.commit()
 	conn.close()
 
@@ -22,6 +22,11 @@ def connect():
 	return conn, cur
 
 #entering the login details of the registered students
+def drop_trigger():
+	conn, cur = connect()
+	cur.execute("drop trigger delete_trigger")
+	conn.commit()
+	conn.close()
 
 def temp_placement():
 	conn, cur = connect()
@@ -153,22 +158,15 @@ def insert_company_det(company_name, tier, cut_off, avg_number_placed, internshi
 def insert_leaderboard(usn = 'null', true_pot_score = 'null'):
 	conn, cur = connect()
 	cur.execute('insert into leaderboard values(?, ?)', [usn, true_pot_score])
-	#cur.execute('select count(*) from leaderboard')
-	#N = cur.fetchall()
-	#N = int(N)
 	conn.commit()
 	conn.close()
-	#return N
 
 def update_leaderboard(usn = 'null', true_pot_score = 'null'):	#maybe remove the N
 	conn, cur = connect()
 	cur.execute('update leaderboard set true_pot_score = ? where usn = ?', [true_pot_score, usn])
-	#cur.execute('select count(*) from leaderboard')
-	#N = cur.fetchall()
-	#N = int(N)
 	conn.commit()
 	conn.close()
-	#return N
+	
 
 def sorted_score():
 	conn, cur = connect()
@@ -178,9 +176,6 @@ def sorted_score():
 	n = cur.fetchall()
 	n1 = int(n[0][0])
 	conn.close()
-	# for row in data:
-	# 	print(row[0])
-	# 	print(row[1])
 	return data, n1
 
 def obtain_cutoff(name):
@@ -192,21 +187,12 @@ def obtain_cutoff(name):
 	c_off = float(c_off)
 	return c_off
 
-#---------------DELETE records....only from marks table till now: May be you can add triggers here-----#
+#---------------DELETE records....Admin Function----#
 def delete_stud (usn):
 	conn, cur = connect()
 	cur.execute('select * from stud_marks where usn=?', (usn, ))
 	d = cur.fetchall()
-
-	#if(d and d[0][1]>6):
-	#		cur.execute('delete from stud_marks where usn = ?', (usn, ))
-			#cur.execute('delete from true_pot where usn = ?', (usn, ))
-			#cur.execute('delete from leaderboard where usn = ?', (usn, ))
-	#elif(d):
 	cur.execute('delete from stud_marks where usn = ?', (usn, ))
-	#else:
-	#	print('INVALID STUDENT USN')
-
 	conn.commit()
 	conn.close()
 
@@ -228,12 +214,6 @@ def chk_usn(usn1):
 		return 1
 	else:
 		return 0
-
-# def update_semester(usn, semester = 'null'):
-
-# 	conn, cur = connect()
-# 	cur.execute('update account_detail set semester = ?, where usn = ?', (semester, usn))
-# 	cur.execute('update truepot set ')
 
 #------------------Functions for debugging----------------------------------------#
 def select_regist():
@@ -302,29 +282,22 @@ def dele_details():
 def create_trigger():
 	conn, cur = connect()
 
-	cur.execute(''' create trigger delete_trigger
+	cur.execute(''' create trigger del_trigger
 					after update
 					on account_detail
-					when new.semester >=8
+					when new.semester >= 8
 
 					BEGIN
-						declare the_usn
-						set @the_usn :=  (select usn from account_detail where semester>7)
-						delete from stud_marks where stud_marks.usn=the_usn;
-						delete from true_pot where true_pot.usn=the_usn;
-						delete from leaderboard where leaderboard.usn=the_usn;
-						delete from account_detail where usn=the_usn;
+						delete from stud_marks where stud_marks.usn = old.usn;
+						delete from true_pot where true_pot.usn = old.usn;
+						delete from leaderboard where leaderboard.usn = old.usn;
+						delete from account_detail where usn = old.usn;
 
 					END;
 
 					''')
 	conn.commit()
 	conn.close()
-
-
-
-
-
 
 	#----------------------------------------------------------------------------------------------------------------------------#
 	#GRAPH STUFF#
@@ -336,16 +309,13 @@ def plot_graph(usn1):
 
 	conn.close()
 	print("This is data 2")
-	# for i in data:
 	print(data)
-
 	return data
 
 def print_additional():
 	conn, cur = connect()
-	cur.execute("describe account_detail")
+	cur.execute("select * from true_pot")
 	data=cur.fetchall()
-
 	conn.close()
 	print("This is additional data")
 	print(data)

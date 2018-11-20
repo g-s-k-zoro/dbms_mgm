@@ -7,7 +7,7 @@ import numpy as np
 app = Flask(__name__)
 
 usn_epic = None
-sem_epic = None
+sem_epic = 0
 internal_status = None
 target = None
 arr = []
@@ -16,14 +16,14 @@ for_company_gpa = []
 for_company_internal = []
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
-
-#create_db()		#IT'S DONE, DO NOT RE-EXECUTE:	only to be executed once, be careful!!!!! 
-
+#__________________________________________________________________________
+#IT'S DONE, DO NOT RE-EXECUTE:	only to be executed once, be careful!!!!!
+#create_db() 
 #temp_placement()		#one time execution
-
 #create_company_view()
 # dele_details()
-# create_trigger()
+#create_trigger()
+#__________________________________________________________________________
 print_additional()
 def true_score(cgpa, code, hckr, clbsts, proj):
 	return ((7*cgpa + 3*code + 2*hckr + 3*clbsts + 5*proj)*1.0)/20
@@ -56,7 +56,7 @@ def sem_intake(sem_no):
 	usn = usn_epic
 	print(usn)
 	print(sem_epic)
-	semester = sem_epic	#has to be defined, and the further names have to be defined that way too
+	semester = int(sem_epic)	#has to be defined, and the further names have to be defined that way too
 	sub_1 = request.form['1']
 	sub_2 = request.form['2']
 	sub_3 = request.form['3']
@@ -69,6 +69,7 @@ def sem_intake(sem_no):
 	#credit_seq = '344444'#request.form['creditsq']	#instead it should be manually inserted
 	attend = request.form['attendance']	#lets see what to do about this
 	#search if record already exists, if YES then update, else
+
 	if(semester == 1):				#credit sequence for different sems
 		credit_seq = "444442"
 	elif(semester == 2):
@@ -127,7 +128,6 @@ def graph_plot(internal_status = 99, target = 99):
 	if(internal_status!=3):
 		for i in range(internal_status):
 			gpa.append(sum1)
-		# gpa.append(sum1)
 	else:
 		data1 = great_two(usn_epic)
 		sum1 = int(credits[0])*data1[0]+int(credits[1])*data1[1]+int(credits[2])*data1[2]+int(credits[3])*data1[3]+int(credits[4])*data1[4]+int(credits[5])*data1[5]
@@ -194,7 +194,7 @@ def graph_plot(internal_status = 99, target = 99):
 	plt.savefig('./static/graph.png')
 	plt.close()
 	return True 					#purpose, for error correction: no return response
-	#return render_template('gp_plot.html')		#or additional.html, lets see.
+	#return render_template('gp_plot.html')	
 
 def graph_subject(sub_no, internal_status, target):
 	global usn_epic
@@ -308,6 +308,7 @@ def check_credentials():
 	if(request.method == 'POST'):
 		usn1 = request.form['usn1']
 		pswd1 = request.form['password1']
+		usn1 = str(usn1)
 
 		chk = check_password(usn1,pswd1)
 
@@ -362,9 +363,7 @@ def insert_additional():
 			print("insert leaderboard check")
 		else:
 			update_truepot(usn_epic, cgpa, code, hckr, clbsts, proj, new_sem)
-			print_additional()
-			if(new_sem>=8):
-				return render_template('home.html')
+			#additional_consequence(usn_epic, new_sem)
 			update_leaderboard(usn_epic,normal)
 			print("update leaderboard check")
 
@@ -479,14 +478,13 @@ def plot_comp():
 		c_name = str(c_name)
 
 		c_gpa = obtain_cutoff(c_name)
+
 		print(len(for_company_gpa))
 		python_sux = [c_gpa, c_gpa, c_gpa, c_gpa]
 		python_sux1 = [0,1,3,4]
-		# for_company_internal = [0,1,2,3,4]
-		# for_company_gpa = [0,9.533,9.4,9.1,8.2]
 		print(for_company_internal)
 		print(for_company_gpa)
-		#fig, ax = plt.subplots()
+
 		plt.plot(python_sux1,python_sux,color = "red")
 		plt.plot(for_company_internal, for_company_gpa, color = "blue")	#	subplot search write the html code for displaying table from backend
 		plt.xlabel('Tests')
@@ -494,18 +492,6 @@ def plot_comp():
 		plt.title('Test Performance')
 		plt.savefig('./static/graph.png')
 		plt.close()
-		# for_company_internal = np.array(for_company_internal).reshape((len(for_company_internal),1))
-		# for_company_gpa = np.array(for_company_gpa).reshape((len(for_company_gpa),1))
-		# python_sux = np.array(python_sux).reshape((len(python_sux),1))
-		# python_sux1 = np.array(python_sux1).reshape((len(python_sux1),1))
-		# df = pd.DataFrame({'x1':for_company_internal, 'y1':for_company_gpa,'x2':python_sux1, 'y2':python_sux })
-		# plt.plot('x1','y1',data = df,color = "red")
-		# plt.plot('x2','y2',data = df,color = "blue")
-		# plt.xlabel('Tests')
-		# plt.ylabel('GPA')
-		# plt.title('Test Performance')
-		# plt.savefig('./static/graph.png')
-		# plt.close()
 
 	return render_template('gp_plot.html')
 #---------------------Temp check : function to remove cache-----------------#
@@ -575,6 +561,10 @@ def company():
 	conn, cur = connect()
 	data = show_company_view()
 	return render_template('table.html',result=data)
+
+@app.route("/about")
+def about():
+	return render_template('about.html')
 
 if __name__ == '__main__':
 	app.run(debug=True)
