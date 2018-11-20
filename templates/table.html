@@ -15,6 +15,25 @@
 	 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='cssem.css')}}">
 	<title>STATS</title>
 	<style>
+		.btn {
+		  border: 1px solid black;
+		  background-color: black;
+		  color: black;
+		  padding: 7px 14px;
+		  font-size: 16px;
+		  cursor: pointer;
+		}
+		.success {
+		  border:none;
+		  color: white;
+		}
+
+		.success:hover {
+		  background-color: #4CAF50;
+		  color: white;
+		  font-color:white;
+		  border-radius: 25px;
+		}
 		table{
 			counter-reset: tableCount;
 		}
@@ -30,17 +49,25 @@
  			<nav class="naba">
 		      <ul>
 		        <br>
-		        <!-- <p style="float: right;position :relative ;right: 55px;"> -->
-		        	<form action="/logout_user" method="post">
-		        		<button class="" type="submit" style="float: left;position: absolute; background: none;outline: none;color: white;border: none;">Home</button>
-		           		<button class="" type="submit" style="float: right;position: absolute;right: 55px; background: none;outline: none;color: white;border: none;">Logout</button>		<!--DEBUG LATER -->
-		           	</form>	
+		        <form action="/leader" method="post">
+        			<button class="btn success" type="submit" style="float: left;position: absolute;bottom:14%;left:3%;">Leaderboard</button>
+        		</form>        		
+        		<form action="/testimonials" method="post">
+        			<button class="btn success" type="submit" style="float: left;position: absolute;bottom:14%;left:13%;">Testimonials</button>
+        		</form>
+        		<form action="#" method="post">
+        			<button class="btn success" type="submit" style="float: left;position: absolute;font-size: 20px;bottom:14%;left:40%;font-family: sans-serif;background: none;color: #4CAF50">Company Statistics</button>
+        		</form>
+        		
+        		<form action="/logout_user" method="post">	
+           			<button class="btn success" type="submit" style="float:right;position: absolute;bottom:14%;right:3%;">Logout</button>
+           		</form>		
 		        <br>
 		      </ul>
     		</nav><br><br>
 
   	<br><table border style="padding: 10px;border:3px solid black;text-align: center;width: 50%;height: 10%;border-collapse: collapse; border-color: white;position: relative;left: 27%;">
-		<tr style="color: white">
+		<tr style="color: #4CAF50">
 			<th><bold>S.no.</bold></th>
 			<th><bold>COMPANY NAME</bold></th>
 			<th><bold>TIER</bold></th>
