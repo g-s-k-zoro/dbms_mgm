@@ -76,9 +76,16 @@
 			{% for row in result %}
 
 			<tr style="color: white;">
-				<th class="counterCell"></th>
-				<th>{{row[0]}}</th>
-				<th>{{'%.3f'%row[1]}}</th>
+				{% if row[0] == result2 %}
+					<th class="counterCell" style="background-color: #4CAF50"></th>
+					<th style="background-color: #4CAF50">{{row[0]}}</th>
+					<th style="background-color: #4CAF50">{{'%.3f'%row[1]}}</th>
+				{% endif %}
+				{% if row[0] != result2 %}
+					<th class="counterCell"></th>
+					<th>{{row[0]}}</th>
+					<th>{{'%.3f'%row[1]}}</th>
+				{% endif %}	
 			</tr>
 			
 			{% endfor %}

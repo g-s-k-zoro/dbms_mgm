@@ -570,7 +570,7 @@ def logout_function():
 @app.route("/leader",methods=['POST','GET'])
 def leader():
 	data = get_values()
-	return render_template('leaderb.html',result = data)
+	return render_template('leaderb.html',result = data, result2 = usn_epic)
 
 @app.route("/testimonials",methods=['POST','GET'])
 def testimonials():
