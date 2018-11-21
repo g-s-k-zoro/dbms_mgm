@@ -113,6 +113,7 @@
         <br>
       </ul>
     </nav><br><br>
+    
     <img src="./static/graph.png" height="542" width="800" style="position: absolute;left:25%;bottom:2%;border-style:solid;">
 
 	    <div class="sidebar">
@@ -148,7 +149,11 @@
 	    		</datalist>
 	    		<button type="submit" class="btn btn-primary" style="padding: 5px;">GO</button>
 	    	</form>
-	    </div>	
+
+	    </div>
+	    {% if result %}
+	    	<div style="position: absolute;top:12%;left: 32%;"><h5 style="color: red;font-family: sans-serif;">Sorry !! As of now, past scores are not good enough to attain the target.</h5></div>
+		{% endif %}	
 	</div>
 </body>
 </html>

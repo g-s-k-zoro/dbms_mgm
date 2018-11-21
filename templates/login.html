@@ -49,7 +49,7 @@
 
         <form action="/loginform" method = 'POST'>
           <div class="textbox">
-            <input type="text" required name="usn1" placeholder="USN">
+            <input type="text" onkeyup="this.value = this.value.toUpperCase();" required name="usn1" placeholder="USN">
           </div>
           <div class="textbox">
             <input type="password" required name="password1" placeholder="Password">

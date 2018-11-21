@@ -14,6 +14,7 @@ arr = []
 N = None
 for_company_gpa = []
 for_company_internal = []
+flag1 = 0
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 #__________________________________________________________________________
@@ -116,6 +117,7 @@ def graph_plot(internal_status = 99, target = 99):
 	global arr
 	global for_company_gpa
 	global for_company_internal
+	global flag1
 	data = plot_graph(usn_epic)
 	internal = [1,2,3,4]
 	gpa = []
@@ -186,6 +188,13 @@ def graph_plot(internal_status = 99, target = 99):
 	print(gpa)
 	print(for_company_internal)
 	print(for_company_gpa)
+	#flag = 0
+	for i in gpa:
+		if i>=10:
+			flag1 = 1
+			break
+		else:
+			flag1 = 0
 
 	plt.plot(internal,gpa)
 	plt.xlabel('Tests')
@@ -256,6 +265,13 @@ def graph_subject(sub_no, internal_status, target):
 			gpa.append(target-.05)
 		elif(rem == 1):
 			gpa.append(target+.05)
+	#flag = 0
+	for i in gpa:
+		if i>=10:
+			flag1=1
+			break
+		else:
+			flag1=0
 
 	plt.plot(internal,gpa)
 	plt.xlabel('Tests')
@@ -459,13 +475,14 @@ def insert_marks7():
 def plot_sub():
 	global usn_epic
 	global sem_epic
+	global flag1
 	if(request.method == 'POST'):
 		sub_no = request.form['sub']
 		sub_no = int(sub_no)
 		
 		graph_subject(sub_no, internal_status, target)
 
-		return render_template('gp_plot.html')
+		return render_template('gp_plot.html',result = flag1)
 
 @app.route("/comp_plot", methods = ['POST', 'GET'])
 def plot_comp():
@@ -501,31 +518,38 @@ def plot_comp():
 
 @app.route("/plot_b1", methods = ['POST', 'GET'])
 def pltb1():
-	return render_template('gp_plot.html')
+	global flag1
+	return render_template('gp_plot.html',result = flag1)
 
 @app.route("/plot_b2", methods = ['POST', 'GET'])
 def pltb2():
-	return render_template('gp_plot.html')
+	global flag1
+	return render_template('gp_plot.html',result = flag1)
 
 @app.route("/plot_b3", methods = ['POST', 'GET'])
 def pltb3():
-	return render_template('gp_plot.html')
+	global flag1
+	return render_template('gp_plot.html',result = flag1)
 
 @app.route("/plot_b4", methods = ['POST', 'GET'])
 def pltb4():
-	return render_template('gp_plot.html')	
+	global flag1
+	return render_template('gp_plot.html',result = flag1)	
 
 @app.route("/plot_b5", methods = ['POST', 'GET'])
 def pltb5():
-	return render_template('gp_plot.html')
+	global flag1
+	return render_template('gp_plot.html',result = flag1)
 
 @app.route("/plot_b6", methods = ['POST', 'GET'])
 def pltb6():
-	return render_template('gp_plot.html')
+	global flag1
+	return render_template('gp_plot.html',result = flag1)
 
 @app.route("/plot_b7", methods = ['POST', 'GET'])
 def pltb7():
-	return render_template('gp_plot.html')
+	global flag1
+	return render_template('gp_plot.html',result = flag1)
 
 @app.route("/update_sem1", methods = ['POST', 'GET'])
 def update_stud_sem():
