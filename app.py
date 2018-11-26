@@ -1,11 +1,10 @@
 from flask import Flask,render_template,url_for,flash,redirect, request
 from queries_1 import *
 import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
 
 app = Flask(__name__)
 
+#__________________Global variables_______________
 usn_epic = None
 sem_epic = 0
 internal_status = None
@@ -15,15 +14,20 @@ N = None
 for_company_gpa = []
 for_company_internal = []
 flag1 = 0
+#____________________Global variable ends___________________
 
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 #__________________________________________________________________________
 #IT'S DONE, DO NOT RE-EXECUTE:	only to be executed once, be careful!!!!!
+#remove_func()
 #create_db() 
 #temp_placement()		#one time execution
 #create_company_view()
 # dele_details()
 #create_trigger()
+#alter_tables();
+#drop_everything()
+#select_regist()
 #__________________________________________________________________________
 print_additional()
 def true_score(cgpa, code, hckr, clbsts, proj):
@@ -68,7 +72,7 @@ def sem_intake(sem_no):
 	target = request.form['target']
 	target=float(target)
 	#credit_seq = '344444'#request.form['creditsq']	#instead it should be manually inserted
-	attend = request.form['attendance']	#lets see what to do about this
+	#attend = request.form['attendance']	#lets see what to do about this
 	#search if record already exists, if YES then update, else
 
 	if(semester == 1):				#credit sequence for different sems
@@ -87,6 +91,7 @@ def sem_intake(sem_no):
 		credit_seq = "454333"
 
 	sub_1 = float(sub_1)
+	print("subj1 marks",sub_1)
 	sub_2 = float(sub_2)
 	sub_3 = float(sub_3)
 	sub_4 = float(sub_4)
@@ -105,7 +110,7 @@ def sem_intake(sem_no):
 	 	elif(internal_status == 2):
 	 		arr = max_min(usn,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6)
 	 		update_marks(usn,semester,(sub_1+data[0][2])/2,(sub_2+data[0][3])/2,(sub_3+data[0][4])/2,(sub_4+data[0][5])/2,(sub_5+data[0][6])/2,(sub_6+data[0][7])/2,credit_seq)
-	 	else:
+	 	elif(internal_status == 3):
 	 		update_marks(usn,semester,sub_1,sub_2,sub_3,sub_4,sub_5,sub_6,credit_seq)
 
 	return internal_status, target
@@ -126,32 +131,38 @@ def graph_plot(internal_status = 99, target = 99):
 	credits = data[0][8]
 	sum1 = int(credits[0])*data[0][2]+int(credits[1])*data[0][3]+int(credits[2])*data[0][4]+int(credits[3])*data[0][5]+int(credits[4])*data[0][6]+int(credits[5])*data[0][7]
 	denom = int(credits[0])+int(credits[1])+int(credits[2])+int(credits[3])+int(credits[4])+int(credits[5])
-	sum1 = sum1*10/(denom*25)
+	sum1 = float(sum1)
+	sum1 = sum1*10.0/(denom*25.0)
 	if(internal_status!=3):
 		for i in range(internal_status):
 			gpa.append(sum1)
 	else:
 		data1 = great_two(usn_epic)
 		sum1 = int(credits[0])*data1[0]+int(credits[1])*data1[1]+int(credits[2])*data1[2]+int(credits[3])*data1[3]+int(credits[4])*data1[4]+int(credits[5])*data1[5]
-		sum1 = sum1*10/(denom*25)
+		sum1 = sum1*10.00/(denom*25.0)
 		gpa.append(sum1)
 		gpa.append(sum1)
 		gpa.append(sum1)
+		print("this is data gp")
+		print(gpa)
+		print(data1[0])
+		print(data1[0],data1[1],data1[2],data1[3],data1[4],data1[5])
+		print(gpa)
 
 	rem = 4-internal_status
 
 	if(sum1<target):
-		delta = target-sum1
+		delta = float(1.0*target-sum1)
 		if(rem == 3):
 			gpa.append(target+(1.0*delta/3))
 			gpa.append(target-(1.0*delta/3))
 			gpa.append(target)
 		elif(rem == 2):
 			sum1 = int(credits[0])*arr[0]+int(credits[1])*arr[1]+int(credits[2])*arr[2]+int(credits[3])*arr[3]+int(credits[4])*arr[4]+int(credits[5])*arr[5]
-			sum1=(sum1*10)/(denom*25)
+			sum1=(sum1*10.0)/(denom*25.0)
 			delta = target - sum1
 			if(sum1<target):
-				if(target+delta<10):
+				if(target+delta<=10):
 					gpa.append(target+(delta))
 					gpa.append(target)
 				else:
@@ -190,7 +201,7 @@ def graph_plot(internal_status = 99, target = 99):
 	print(for_company_gpa)
 	#flag = 0
 	for i in gpa:
-		if i>=10:
+		if i>10:
 			flag1 = 1
 			break
 		else:
@@ -308,6 +319,9 @@ def insert_new_stud():
 		sem = request.form['sem']
 		email = request.form['email']
 		pswd = request.form['confirm_password']
+		pswd = str(pswd)
+
+		pswd = pswd*2 + "3"
 
 		insert_entry(usn, sem, email, pswd)
 
@@ -325,6 +339,8 @@ def check_credentials():
 		usn1 = request.form['usn1']
 		pswd1 = request.form['password1']
 		usn1 = str(usn1)
+		pswd1 = str(pswd1)
+		pswd1 = pswd1*2 + "3"
 
 		chk = check_password(usn1,pswd1)
 
@@ -385,19 +401,19 @@ def insert_additional():
 
 		# return render_template('.html')		#same page rendering, lets see what happens
 		if(sem_epic == 1):
-			return	render_template('1sem.html',result=[usn_epic,sem_epic])	
+			return	render_template('1sem.html',result=[usn_epic,sem_epic,"Click here"])	
 		elif(sem_epic == 2):
-			return	render_template('2sem.html',result=[usn_epic,sem_epic])
+			return	render_template('2sem.html',result=[usn_epic,sem_epic,"Click here"])
 		elif(sem_epic == 3):
-			return	render_template('3sem.html',result=[usn_epic,sem_epic])
+			return	render_template('3sem.html',result=[usn_epic,sem_epic,"Click here"])
 		elif(sem_epic == 4):
-			return	render_template('4sem.html',result=[usn_epic,sem_epic])
+			return	render_template('4sem.html',result=[usn_epic,sem_epic,"Click here"])
 		elif(sem_epic == 5):
-			return	render_template('5sem.html',result=[usn_epic,sem_epic])
+			return	render_template('5sem.html',result=[usn_epic,sem_epic,"Click here"])
 		elif(sem_epic == 6):
-			return	render_template('6sem.html',result=[usn_epic,sem_epic])
+			return	render_template('6sem.html',result=[usn_epic,sem_epic,"Click here"])
 		elif(sem_epic == 7):
-			return	render_template('7sem.html',result=[usn_epic,sem_epic])
+			return	render_template('7sem.html',result=[usn_epic,sem_epic,"Click here"])
 
 		return render_template('home.html')		
 
@@ -409,7 +425,7 @@ def insert_marks1():
 		
 		internal_status, target = sem_intake(1)
 		graph_plot(internal_status, target)
-		return render_template('additional.html')
+		return render_template('additional.html',result=[usn_epic,sem_epic])
 
 @app.route("/subjectpage2", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks2():
@@ -419,7 +435,7 @@ def insert_marks2():
 
 		internal_status, target = sem_intake(2)
 		graph_plot(internal_status, target)
-		return render_template('additional.html')
+		return render_template('additional.html',result=[usn_epic,sem_epic])
 
 @app.route("/subjectpage3", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks3():
@@ -429,7 +445,7 @@ def insert_marks3():
 
 		internal_status, target = sem_intake(3)
 		graph_plot(internal_status, target)
-		return render_template('additional.html')
+		return render_template('additional.html',result=[usn_epic,sem_epic])
 
 @app.route("/subjectpage4", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks4():
@@ -439,7 +455,7 @@ def insert_marks4():
 
 		internal_status, target = sem_intake(4)
 		graph_plot(internal_status, target)
-		return render_template('additional.html')
+		return render_template('additional.html',result=[usn_epic,sem_epic])
 
 @app.route("/subjectpage5", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks5():
@@ -449,7 +465,7 @@ def insert_marks5():
 
 		internal_status, target = sem_intake(5)
 		graph_plot(internal_status, target)
-		return render_template('additional.html')
+		return render_template('additional.html',result=[usn_epic,sem_epic])
 
 @app.route("/subjectpage6", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks6():
@@ -459,7 +475,7 @@ def insert_marks6():
 
 		internal_status, target = sem_intake(6)
 		graph_plot(internal_status, target)
-		return render_template('additional.html')
+		return render_template('additional.html',result=[usn_epic,sem_epic])
 
 @app.route("/subjectpage7", methods = ['POST', 'GET'])			#URL redirection to be changed and maybe copied 8 times.LETS see!
 def insert_marks7():
@@ -469,7 +485,7 @@ def insert_marks7():
 
 		internal_status, target = sem_intake(7)
 		graph_plot(internal_status, target)
-		return render_template('additional.html')
+		return render_template('additional.html',result=[usn_epic,sem_epic])
 
 @app.route("/subj_plot", methods = ['POST', 'GET'])
 def plot_sub():

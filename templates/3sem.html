@@ -24,6 +24,14 @@
       font-color:white;
       border-radius: 25px;
     }
+    .blinking{
+      animation: blinkingText 2s infinite;
+    }
+    @keyframes blinkingText{
+      0%{ color: darkred; }
+      50%{ color:transparent; }
+      100%{ color: darkred; }
+    }
     </style>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
@@ -107,9 +115,9 @@
                   </div>
                 </div>
                 <div class="row" style="padding-top:10px;">
-                  <div class="col-xs-8 col-xs-offset-0"><br>
+                  <!-- <div class="col-xs-8 col-xs-offset-0"><br>
                       <b><input  style="width: 19%;font-size: 15px" id="7" type="number" placeholder="Attendance" required name="attendance" style="width:25%;"></b><br>
-                  </div>
+                  </div> -->
                 </div>
                 <button class="w3-button w3-green w3-section w3-left" type="submit">Enter</button>
             </form>
@@ -130,8 +138,11 @@
           <div class="row" id="break"></div>
           <div class="row" id="break"></div>
           <div class="row" id="button">
-            <form action="/plot_b3" method="POST">
-              <button id="54"  style="position:absolute;top: 150%;left: 50%;" type="submit" required name="plots"><img src="https://thumb7.shutterstock.com/display_pic_with_logo/859894/449865031/stock-photo-graph-button-isolated-on-white-background-d-render-449865031.jpg" alt="graph" width="60" height="60"></button><br>
+            {% if result[2] %}
+              <strong><span class="blinking" style="color: darkred;position: absolute;bottom: -50%;right: -5%;font-size: 25px;word-spacing: 0.01em">{{result[2]}}<br> &nbsp &nbsp &nbsp &#8659;</span></strong>
+            {% endif %}
+            <form action="/plot_b1" method="POST">
+              <button id="54"  style="position:absolute;top: 150%;left: 50%;background: none;outline: none;" type="submit" required name="plots"><img src="/static/images/graph_logo.jpg" alt="graph" width="60" height="60"></button><br>
             </form>  
             
           </div>

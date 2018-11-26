@@ -9,8 +9,11 @@ def create_db():
 	#cur.execute("create table true_pot (usn varchar(10) primary key, cgpa DECIMAL(2,2), number_of_coding_comp_won int, hackerrank_score int, club_membership_status int, no_of_projects int)")
 	#cur.execute("create table placement_info (company_name varchar(30), tier int, cut_off DECIMAL(2,2), avg_number_placed int, internship_status int)")
 	#cur.execute("create table leaderboard (usn varchar(10), true_pot_score DECIMAL(2,4))")
-	cur.execute("create table account_detail (usn varchar(10), semester int, email varchar(50), password varchar(100))")
-	conn.commit()
+	#cur.execute("create table account_detail (usn varchar(10), semester int, email varchar(50), password varchar(100))")	#remember what you did here
+	#cur.execute("CREATE INDEX acc_index ON account_detail(usn);")		##most searches in these days
+	#cur.execute("CREATE INDEX stud_marks_index ON stud_marks(usn);")
+	#cur.execute("CREATE INDEX internal_index ON internal_table(usn);")
+	#conn.commit()
 	conn.close()
 
 
@@ -39,7 +42,7 @@ def insert_entry(usn1 = 'null', semester1 = 'null', email1 = 'null', password1 =
 	cur.execute('insert into account_detail values (?, ?, ?, ?)', [usn1, semester1, email1, password1])
 	conn.commit()
 	conn.close()
-	select_regist()
+	#select_regist()
 
 #function for checking the password
 
@@ -94,12 +97,21 @@ def great_two(usn1):						#JOINS USED
 	cur.execute("select * from internal_table,stud_marks where internal_table.usn = stud_marks.usn and stud_marks.usn = ?",(usn1, ))
 	data = cur.fetchall()
 	best = []
-	best.append((max(data[0][2],data[0][14])+data[0][1])/2)
-	best.append((max(data[0][4],data[0][15])+data[0][3])/2)
-	best.append((max(data[0][6],data[0][16])+data[0][5])/2)
-	best.append((max(data[0][8],data[0][17])+data[0][7])/2)
-	best.append((max(data[0][10],data[0][18])+data[0][9])/2)
-	best.append((max(data[0][12],data[0][19])+data[0][11])/2)
+	best.append((max(float(data[0][2]),float(data[0][15]))+float(data[0][1]))/2.0)
+	best.append((max(float(data[0][4]),float(data[0][16]))+float(data[0][3]))/2.0)
+	best.append((max(float(data[0][6]),float(data[0][17]))+float(data[0][5]))/2.0)
+	best.append((max(float(data[0][8]),float(data[0][18]))+float(data[0][7]))/2.0)
+	best.append((max(float(data[0][10]),float(data[0][19]))+float(data[0][9]))/2.0)
+	best.append((max(float(data[0][12]),float(data[0][20]))+float(data[0][11]))/2.0)
+
+	print(float(data[0][2]),float(data[0][14]), float(data[0][1]))
+	print(float(data[0][4]),float(data[0][15]), float(data[0][3]))
+	print(float(data[0][6]),float(data[0][16]), float(data[0][5]))
+	print(float(data[0][8]),float(data[0][17]), float(data[0][7]))
+	print(float(data[0][10]),float(data[0][18]), float(data[0][9]))
+	print(float(data[0][12]),float(data[0][19]), float(data[0][11]))
+
+	print(best)
 	conn.close()
 	return best
 
@@ -116,9 +128,10 @@ def great_two_2(usn1, sub_no):						#JOINS USED
 def update_marks(usn1 = 'null', semester = 'null', sub_1 = 'null', sub_2='null' , sub_3 = 'null', sub_4= 'null', sub_5 = 'null', sub_6 = 'null', credit_seq = 'null'):
 
 	conn, cur = connect()
-	cur.execute('update stud_marks set semester = ?, sub_1 = ?, sub_2 = ?, sub_3 = ?, sub_4 = ?, sub_5 = ?, sub_6 = ?, credit_seq = ? where usn = ?', [semester, sub_1, sub_2, sub_3, sub_4, sub_5, sub_6, credit_seq, usn1])
+	cur.execute('update stud_marks set semester = ?, sub_1 = ?, sub_2 = ?, sub_3 = ?, sub_4 = ?, sub_5 = ?, sub_6 = ?, credit_seq = ? where usn = ?', (semester, sub_1, sub_2, sub_3, sub_4, sub_5, sub_6, credit_seq, usn1,))
 	conn.commit()
 	conn.close()
+	select_marks()
 
 #checking if entry for truepot exists
 def exist_check(usn1):
@@ -142,8 +155,8 @@ def insert_truepot(usn = 'null', cgpa = 'null', number_of_coding_comp_won = 'nul
 #function for updating details for evaluation of truepot
 def update_truepot(usn = 'null', cgpa = 'null', number_of_coding_comp_won = 'null', hackerrank_score = 'null', club_membership_status = 'null', no_of_projects = 'null', new_sem = 'null'):
 	conn, cur = connect()
-	cur.execute('update true_pot set cgpa = ?, number_of_coding_comp_won = ?, hackerrank_score = ?, club_membership_status = ?, no_of_projects = ? where usn = ?', [cgpa, number_of_coding_comp_won, hackerrank_score, club_membership_status, no_of_projects, usn])
-	cur.execute('update account_detail set semester = ? where usn =? and semester != ?',[new_sem, usn, new_sem])
+	cur.execute('update true_pot set cgpa = ?, number_of_coding_comp_won = ?, hackerrank_score = ?, club_membership_status = ?, no_of_projects = ? where usn = ?', (cgpa, number_of_coding_comp_won, hackerrank_score, club_membership_status, no_of_projects, usn,))
+	cur.execute('update account_detail set semester = ? where usn =? and semester != ?',(new_sem, usn, new_sem,))
 	conn.commit()
 	conn.close()
 
@@ -163,7 +176,7 @@ def insert_leaderboard(usn = 'null', true_pot_score = 'null'):
 
 def update_leaderboard(usn = 'null', true_pot_score = 'null'):	#maybe remove the N
 	conn, cur = connect()
-	cur.execute('update leaderboard set true_pot_score = ? where usn = ?', [true_pot_score, usn])
+	cur.execute('update leaderboard set true_pot_score = ? where usn = ?', (true_pot_score, usn,))
 	conn.commit()
 	conn.close()
 	
@@ -216,6 +229,23 @@ def chk_usn(usn1):
 		return 0
 
 #------------------Functions for debugging----------------------------------------#
+def drop_everything():
+	conn, cur = connect()
+	cur.execute("delete from account_detail")
+	cur.execute("delete from leaderboard")
+	cur.execute("delete from stud_marks")
+	cur.execute("delete from internal_table")
+	cur.execute("delete from true_pot")
+	conn.commit()
+	conn.close
+
+def remove_func():
+	conn, cur = connect()
+	cur.execute("drop table leaderboard")
+	cur.execute("drop table account_detail")
+	conn.commit()
+	conn.close()
+
 def select_regist():
 	conn, cur = connect()
 	cur.execute("select * from account_detail")
@@ -224,10 +254,11 @@ def select_regist():
 	for i in data:
 		print(i)
 	return data
-
-def inst_marks():
+#######
+def alter_tables():
 	conn, cur = connect()
-	cur.execute("insert into stud_marks values(?, ?, ?, ?, ?, ?, ?, ?, ?)", ["4NI18CS004", 1, 21, 25, 25, 17.5, 23, 18, "344444"])
+	cur.execute("alter table leaderboard add primary key(?)",[usn])
+	cur.execute("alter table account_detail add primary key(?)",[usn])
 	conn.commit()
 	conn.close()
 
@@ -299,6 +330,20 @@ def create_trigger():
 	conn.commit()
 	conn.close()
 
+
+##_______________________Transactions_____________________________
+# def leader_transact():
+# 	conn, cur = connect()
+# 	cur.execute('''
+# 				BEGIN TRANSACTION;
+
+# 				UPDATE leaderboard
+# 				   SET diff = true_pot_score - prev_score
+# 				 WHERE account_no = 100;
+				 
+				 
+# 				COMMIT;
+# 		''')
 	#----------------------------------------------------------------------------------------------------------------------------#
 	#GRAPH STUFF#
 
@@ -306,7 +351,7 @@ def plot_graph(usn1):
 	conn, cur = connect()
 	cur.execute("select * from stud_marks where usn =?", (usn1, ))
 	data = cur.fetchall()
-
+	conn.commit()
 	conn.close()
 	print("This is data 2")
 	print(data)
